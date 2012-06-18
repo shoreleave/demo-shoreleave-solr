@@ -1,0 +1,23 @@
+<div class="row item-result">
+                <div class="well span8">
+                    <div class="row-fluid">
+                        <a class="pull-left" href="http://www.amazon.com/dp/12345" id="item-link12345"><h4>Item Name :: 12345</h4></a>
+                    </div>
+                    <a href="#" rel="popover" id="item-details12345" data-content="More item infoaaaaaaaaaaa a aaaaaa aaaaaaaaaaaaaaaaa aaa a aaa<br /> asdfasdfa" title="Item Name :: 12345">
+                        <img src="http://www.pauldee.org/drunkcut3.jpg" alt="More info" height="42" width="42" />
+                    </a>
+                    <ul class="row-fluid item-details">
+                        <li class="span3">Some stuff</li>
+                        <li class="span3">Some stuff</li>
+                        <li class="span3">Some stuff</li>
+                        <li class="span3">Some stuff</li>
+                        <li class="span3">Some stuff</li>
+                        <li class="span3">Some stuff</li>
+                    </ul>
+                    <div class="descinfo">
+                        Here is a bunch of info about tutors
+                        
+                    </div>
+                </div>
+            </div> <!-- item-result -->
+            <hr>

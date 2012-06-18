@@ -1,0 +1,54 @@
+shoreleave
+==========
+
+A smarter client-side in ClojureScript
+
+###Shoreleave is a collection of integrated libraries that focuses on:
+
+ * Security
+ * Idiomatic interfaces
+ * Common client-side strategies
+ * HTML5 capabilities
+ * ClojureScript's advantages
+
+It builds upon efforts found in other ClojureScript projects, such as [Fetch](https://github.com/ibdknox/fetch) and [ClojureScript:One](http://clojurescriptone.com/).
+
+
+Demo-shoreleave-solr Overview
+------------------------
+###This is a work in progress
+The goal is illustrate how to build a client using partial rendering, and render search results from SOLR via JSONP calls.
+
+You can interactively explore the code base using a [Catnip](https://github.com/bodil/catnip) guided tour: `lein2 edit`
+
+You can also browse the [Marginalia docs](#).
+
+
+Libraries used
+--------------
+Shoreleave makes no assumptions about other libraries you might be using in your app.
+
+This particular demo uses:
+
+ * [Enfocus](https://github.com/ckirkendall/enfocus)
+ * [jayq](https://github.com/ibdknox/jayq)
+
+
+Why is there a Rakefile
+------------------------
+This demo is built using partial renders.  Pages are partially compiled (baked) on the server,
+then DOM swaps and dynamic interactions are added with ClojureScript.
+
+The Rakefile laces together the partial pieces of HTML into a final, servable page.
+You can compile the pages with: `rake`
+
+The client uses the partial HTML snippets to build out pieces of the DOM.
+
+
+License
+-------
+Copyright © 2012 Paul deGrandis
+
+Distributed under the Eclipse Public License, the same as Clojure.
+Please see the `LICENSE_epl.html` for details.
+

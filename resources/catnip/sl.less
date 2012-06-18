@@ -1,0 +1,94 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic|Ubuntu:400,700,400italic,700italic");
+@import "../bootstrap/less/bootstrap.less";
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background: #ccc;
+    font-family: Ubuntu;
+    text-align: center;
+    overflow: hidden;
+    #gradient > .vertical-three-colors(#ccc, #eee, 30%, #fff);
+}
+
+p, dl {
+    font-size: 18pt;
+    line-height: 24pt;
+}
+
+dt, dd {
+    display: inline;
+}
+
+dd:before {
+    content: "→ ";
+}
+
+dd:after {
+    content:"\A";
+    white-space: pre;
+}
+
+div.container {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    /** background: url("/m/clojure-glyph.svg") no-repeat fixed 50%; */
+
+    section {
+        width: 96%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+div.container:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 0;
+    vertical-align: middle;
+}
+
+h1 {
+    font-size: 44pt;
+    text-shadow: 1px 1px 2px white;
+    border-bottom: 2px groove white;
+    padding-bottom: 2pt;
+    margin-bottom: 0.5em;
+    
+    em {
+        margin-left: -0.05em;
+        margin-right: 0.13em;
+    }
+}
+
+h2 {
+    font-size: 32pt;
+    text-shadow: 1px 1px 2px white;
+}
+
+p.twitter {
+    margin-top: 8pt;
+    
+    a {
+        font-size: 28pt;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px white;
+        color: #116;
+        text-decoration: underline;
+    }
+}
+
+li {
+    list-style: none;
+}
+

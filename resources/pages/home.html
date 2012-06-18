@@ -1,0 +1,41 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <%= partial 'head.html' %>
+</head>
+<body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+    <%= partial 'about-modal.html' %>
+    <%= partial 'nav-bar.html' %>
+
+    <div class="container">
+      <!-- We avoid the search form partial here, because of window.location submit-->
+      <div class="fluid-row">
+          <h1>Find items</h1>
+      </div>
+      <div class="row">
+          <div class="span8">
+              <form class="form-horizontal" id='main-search' action="/search" method="get">
+                  <input class="input-large search-query" type="text" value="" name='q' id='item-search-box' />
+                  <input class="btn btn-primary" type="button" value="Search" id='item-search-button' onClick='window.location = "/search#q="+q.value;'/>
+                  <p class="help-block">Ex: Carrots near New York City</p>
+              </form>
+          </div>
+      </div>
+      <hr>
+      <!-- TODO drop some microdata here: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=146861 -->
+      <footer>
+        <%= partial 'footer.html' %>
+      </footer>
+
+  </div> <!-- /container -->
+
+<%= partial 'main-scripts.html' %>
+<!-- end scripts-->
+
+</body>
+</html>

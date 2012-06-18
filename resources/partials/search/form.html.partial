@@ -1,0 +1,12 @@
+<div class="fluid-row">
+          <h1>Find items</h1>
+      </div>
+      <div class="row">
+          <div class="span8">
+              <form class="form-horizontal" id='main-search'>
+                  <input class="input-large search-query" type="text" value="" name='q' id='item-search-box' />
+                  <input class="btn btn-primary" type="button" value="Search" id='item-search-button' onClick='findit.client.main.process_search(q.value);'/>
+                  <p class="help-block">Ex: Carrots near New York City</p>
+              </form>
+          </div>
+      </div>

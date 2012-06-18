@@ -1,0 +1,21 @@
+<!-- TODO this needs to try our CDN next, and if that fails, we serve it up -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../public/js/jquery-1.7.1.min.js"><\/script>')</script>
+
+<!-- TODO: If we don't really care about old IE, these can remain async -->
+<!-- scripts concatenated and minified via ant build script-->
+<script src="../public/js/bs/transition.js" async="async"></script>
+<script src="../public/js/bs/modal.js" async="async"></script>
+<script src="../public/js/bs/collapse.js" async="async"></script>
+<script src="../public/js/bs/dropdown.js" async="async"></script>
+<!-- Patch "enter" to submit the search form correctly -->
+<script>
+$('#item-search-box').keypress(function(e){
+    if(e.which == 13){
+        e.preventDefault();
+        $('#item-search-button').click();
+        return false;
+    }
+});
+</script>
+

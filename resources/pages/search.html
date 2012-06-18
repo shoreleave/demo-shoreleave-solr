@@ -1,0 +1,47 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <%= partial 'head.html' %>
+</head>
+<body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+    <%= partial 'about-modal.html' %>
+    <%= partial 'nav-bar.html' %>
+
+    <div class="container">
+      <%= partial 'search/form.html' %>
+
+      <%= partial 'search/result-header.html' %>
+      <hr>
+      <form class="form-horizontal">
+          <div id="item-results">
+            <%= partial 'search/item-result.html' %>
+          </div>
+          <div class="form-actions">
+              <a class="btn btn-success" data-toggle="modal" href="#message-modal">Buy items</a>
+              <input class="btn" type="button" value="Clear" onClick="$('input[type=checkbox]').attr('checked',false);"/>
+          </div>
+      </form> <!-- /tutor-search-results -->
+
+      <hr>
+      <!-- TODO drop some microdata here: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=146861 -->
+      <footer>
+        <%= partial 'footer.html' %>
+      </footer>
+
+  </div> <!-- /container -->
+
+<%= partial 'main-scripts.html' %>
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="../public/cljs/findit.js" defer="defer"></script>
+<script src="../public/js/bs/tooltip.js" defer="defer"></script>
+<script src="../public/js/bs/popover.js" defer="defer"></script>
+<!-- end scripts-->
+
+<!-- TODO Pull this into a single single .js file and defer/async load -->
+</body>
+</html>
