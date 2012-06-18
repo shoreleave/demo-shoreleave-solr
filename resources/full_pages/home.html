@@ -1,0 +1,108 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>FindIt - an example application using Shoreleave</title>
+    <meta name="description" content="CLJS, Noir, Shoreleave - awesomeness">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width">
+    
+    <!-- TODO Put all of this on the CDN -->
+    <link rel="stylesheet" type="text/css" href="../public/css/style.min.css">
+
+    <script src="../public/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+</head>
+<body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+    <div class="modal hide fade" id="about-modal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>About</h3>
+        </div>
+        <div class="modal-body">
+            <p><strong>FindIt</strong> is an example application exercising remotes, pubsub, and integrating with Enfocus</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+        </div>
+    </div>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+          <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">FindIt</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <!-- <li class="active"><a href="/">Home</a></li> -->
+              <li><a data-toggle="modal" href="#about-modal">About</a></li>
+              <li class="dropdown" data-dropdown="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SOLR <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Reindex all data</a></li>
+                  <li><a href="#">Update index</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div><!-- /navbar -->
+
+    <div class="container">
+      <!-- We avoid the search form partial here, because of window.location submit-->
+      <div class="fluid-row">
+          <h1>Find items</h1>
+      </div>
+      <div class="row">
+          <div class="span8">
+              <form class="form-horizontal" id='main-search' action="/search" method="get">
+                  <input class="input-large search-query" type="text" value="" name='q' id='item-search-box' />
+                  <input class="btn btn-primary" type="button" value="Search" id='item-search-button' onClick='window.location = "/search#q="+q.value;'/>
+                  <p class="help-block">Ex: Carrots near New York City</p>
+              </form>
+          </div>
+      </div>
+      <hr>
+      <!-- TODO drop some microdata here: http://support.google.com/webmasters/bin/answer.py?hl=en&answer=146861 -->
+      <footer>
+        <p>&copy; Paul deGrandis 2012 - Shoreleave : a smarter client-side</p>
+      </footer>
+
+  </div> <!-- /container -->
+
+<!-- TODO this needs to try our CDN next, and if that fails, we serve it up -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../public/js/jquery-1.7.1.min.js"><\/script>')</script>
+
+<!-- TODO: If we don't really care about old IE, these can remain async -->
+<!-- scripts concatenated and minified via ant build script-->
+<script src="../public/js/bs/transition.js" async="async"></script>
+<script src="../public/js/bs/modal.js" async="async"></script>
+<script src="../public/js/bs/collapse.js" async="async"></script>
+<script src="../public/js/bs/dropdown.js" async="async"></script>
+<!-- Patch "enter" to submit the search form correctly -->
+<script>
+$('#item-search-box').keypress(function(e){
+    if(e.which == 13){
+        e.preventDefault();
+        $('#item-search-button').click();
+        return false;
+    }
+});
+</script>
+
+<!-- end scripts-->
+
+</body>
+</html>
