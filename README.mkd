@@ -21,7 +21,7 @@ The goal is illustrate how to build a client using partial rendering, and render
 
 You can interactively explore the code base using a [Catnip](https://github.com/bodil/catnip) guided tour: `lein2 edit`
 
-You can also browse the [Marginalia docs](#).
+You can also browse the [Marginalia docs](#) and run with app with: `lein run`
 
 
 Libraries used
