@@ -16,7 +16,7 @@
 ;; is most often used, placing the config map first allows us to later
 ;; migrate config to function that resolves configuration requests.
 (def config
-  {:app-port 8080
+  {:app-port 8889
    :template-dir "resources/full_pages/"
    :page-cache-expire-ms (* 10 1000)
 
