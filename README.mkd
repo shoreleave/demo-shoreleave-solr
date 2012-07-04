@@ -36,13 +36,15 @@ This particular demo uses:
 
 Why is there a Rakefile
 ------------------------
-This demo is built using partial renders.  Pages are partially compiled (baked) on the server,
+This demo is built using _partial renders_.  Pages are partially compiled (baked) on the server,
 then DOM swaps and dynamic interactions are added with ClojureScript.
 
 The Rakefile laces together the partial pieces of HTML into a final, servable page.
 You can compile the pages with: `rake`
 
-The client uses the partial HTML snippets to build out pieces of the DOM.
+The client/broswer uses the partial HTML snippets to build out pieces of the DOM.
+
+For more information on partial renders, please see Paul's [blog post](#)
 
 
 License
