@@ -4,7 +4,8 @@
             [shoreleave.common :as common]
             [shoreleave.browser.history :as history]
             [shoreleave.pubsubs.simple :as pbus]
-            [shoreleave.pubsubs.protocols :as pubsub]))
+            [shoreleave.pubsubs.protocols :as pubsub])
+  (:require-macros  [shoreleave.client.remotes.macros :as srm]))
 
 ;; Initial setup
 ;; -------------
@@ -12,6 +13,9 @@
 (def query-args (common/query-args-map))
 (def hash-args (common/hash-args-map))
 
+(defn ^:export apiping []
+  (srm/rpc (api/ping) [pong-response]
+    (js/alert pong-response)))
 
 ;; If someone came to the search page with a search query already
 ;; in the URL, do the search now
