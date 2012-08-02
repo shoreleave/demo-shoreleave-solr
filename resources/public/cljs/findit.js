@@ -379,6 +379,13 @@ goog.base = function(a, b, c) {
 goog.scope = function(a) {
   a.call(goog.global)
 };
+goog.debug = {};
+goog.debug.Error = function(a) {
+  this.stack = Error().stack || "";
+  a && (this.message = "" + a)
+};
+goog.inherits(goog.debug.Error, Error);
+goog.debug.Error.prototype.name = "CustomError";
 goog.string = {};
 goog.string.Unicode = {NBSP:"\u00a0"};
 goog.string.startsWith = function(a, b) {
@@ -691,13 +698,6 @@ goog.string.toSelectorCaseCache_ = {};
 goog.string.toSelectorCase = function(a) {
   return goog.string.toSelectorCaseCache_[a] || (goog.string.toSelectorCaseCache_[a] = ("" + a).replace(/([A-Z])/g, "-$1").toLowerCase())
 };
-goog.debug = {};
-goog.debug.Error = function(a) {
-  this.stack = Error().stack || "";
-  a && (this.message = "" + a)
-};
-goog.inherits(goog.debug.Error, Error);
-goog.debug.Error.prototype.name = "CustomError";
 goog.asserts = {};
 goog.asserts.ENABLE_ASSERTS = goog.DEBUG;
 goog.asserts.AssertionError = function(a, b) {
@@ -12266,48 +12266,6 @@ cljs.core.UUID.prototype.toString = function() {
   return cljs.core.pr_str.call(null, this)
 };
 cljs.core.UUID;
-var shoreleave = {browser:{}};
-shoreleave.browser.blob = {};
-shoreleave.browser.blob.blobber = function() {
-  var a = null, b = function() {
-    return a.call(null, window)
-  }, c = function(a) {
-    var b = a.BlobBuilder;
-    if(cljs.core.truth_(b)) {
-      return b
-    }
-    b = a.WebKitBlobBuilder;
-    return cljs.core.truth_(b) ? b : a.MozBlobBuilder
-  }, a = function(a) {
-    switch(arguments.length) {
-      case 0:
-        return b.call(this);
-      case 1:
-        return c.call(this, a)
-    }
-    throw"Invalid arity: " + arguments.length;
-  };
-  a.cljs$lang$arity$0 = b;
-  a.cljs$lang$arity$1 = c;
-  return a
-}();
-window.BlobBuilder = shoreleave.browser.blob.blobber.call(null);
-shoreleave.browser.blob.blob_builder = function() {
-  return new window.BlobBuilder
-};
-window.BlobBuilder.prototype.cljs$core$ITransientCollection$ = !0;
-window.BlobBuilder.prototype.cljs$core$ITransientCollection$_conj_BANG_$arity$2 = function(a, b) {
-  return a.append(b)
-};
-shoreleave.browser.blob.blob = function(a) {
-  return a.getBlob()
-};
-shoreleave.browser.blob.object_url_BANG_ = function(a) {
-  var b;
-  b = window.URL;
-  b = cljs.core.truth_(b) ? b : window.webkitURL;
-  return b.createObjectURL(a)
-};
 cljs.reader = {};
 cljs.reader.PushbackReader = {};
 cljs.reader.read_char = function(a) {
@@ -12736,6 +12694,48 @@ cljs.reader.deregister_tag_parser_BANG_ = function(a) {
   var a = cljs.core.name.call(null, a), b = cljs.core._lookup.call(null, cljs.core.deref.call(null, cljs.reader._STAR_tag_table_STAR_), a, null);
   cljs.core.swap_BANG_.call(null, cljs.reader._STAR_tag_table_STAR_, cljs.core.dissoc, a);
   return b
+};
+var shoreleave = {browser:{}};
+shoreleave.browser.blob = {};
+shoreleave.browser.blob.blobber = function() {
+  var a = null, b = function() {
+    return a.call(null, window)
+  }, c = function(a) {
+    var b = a.BlobBuilder;
+    if(cljs.core.truth_(b)) {
+      return b
+    }
+    b = a.WebKitBlobBuilder;
+    return cljs.core.truth_(b) ? b : a.MozBlobBuilder
+  }, a = function(a) {
+    switch(arguments.length) {
+      case 0:
+        return b.call(this);
+      case 1:
+        return c.call(this, a)
+    }
+    throw"Invalid arity: " + arguments.length;
+  };
+  a.cljs$lang$arity$0 = b;
+  a.cljs$lang$arity$1 = c;
+  return a
+}();
+window.BlobBuilder = shoreleave.browser.blob.blobber.call(null);
+shoreleave.browser.blob.blob_builder = function() {
+  return new window.BlobBuilder
+};
+window.BlobBuilder.prototype.cljs$core$ITransientCollection$ = !0;
+window.BlobBuilder.prototype.cljs$core$ITransientCollection$_conj_BANG_$arity$2 = function(a, b) {
+  return a.append(b)
+};
+shoreleave.browser.blob.blob = function(a) {
+  return a.getBlob()
+};
+shoreleave.browser.blob.object_url_BANG_ = function(a) {
+  var b;
+  b = window.URL;
+  b = cljs.core.truth_(b) ? b : window.webkitURL;
+  return b.createObjectURL(a)
 };
 shoreleave.efunction = {};
 shoreleave.efunction.Function = function(a, b) {
@@ -17715,6 +17715,695 @@ jayq.util.clj__GT_js = function clj__GT_js(b) {
     return cljs.core.assoc.call(null, b, clj__GT_js.call(null, e), clj__GT_js.call(null, f))
   }, cljs.core.ObjMap.EMPTY, b).strobj : cljs.core.coll_QMARK_.call(null, b) ? cljs.core.apply.call(null, cljs.core.array, cljs.core.map.call(null, clj__GT_js, b)) : b
 };
+var clojure = {string:{}};
+clojure.string.seq_reverse = function(a) {
+  return cljs.core.reduce.call(null, cljs.core.conj, cljs.core.List.EMPTY, a)
+};
+clojure.string.reverse = function(a) {
+  return a.split("").reverse().join("")
+};
+clojure.string.replace = function(a, b, c) {
+  if(cljs.core.string_QMARK_.call(null, b)) {
+    return a.replace(RegExp(goog.string.regExpEscape(b), "g"), c)
+  }
+  if(cljs.core.truth_(b.hasOwnProperty("source"))) {
+    return a.replace(RegExp(b.source, "g"), c)
+  }
+  throw[cljs.core.str("Invalid match arg: "), cljs.core.str(b)].join("");
+};
+clojure.string.replace_first = function(a, b, c) {
+  return a.replace(b, c)
+};
+clojure.string.join = function() {
+  var a = null, b = function(a) {
+    return cljs.core.apply.call(null, cljs.core.str, a)
+  }, c = function(a, b) {
+    return cljs.core.apply.call(null, cljs.core.str, cljs.core.interpose.call(null, a, b))
+  }, a = function(a, e) {
+    switch(arguments.length) {
+      case 1:
+        return b.call(this, a);
+      case 2:
+        return c.call(this, a, e)
+    }
+    throw"Invalid arity: " + arguments.length;
+  };
+  a.cljs$lang$arity$1 = b;
+  a.cljs$lang$arity$2 = c;
+  return a
+}();
+clojure.string.upper_case = function(a) {
+  return a.toUpperCase()
+};
+clojure.string.lower_case = function(a) {
+  return a.toLowerCase()
+};
+clojure.string.capitalize = function(a) {
+  return 2 > cljs.core.count.call(null, a) ? clojure.string.upper_case.call(null, a) : [cljs.core.str(clojure.string.upper_case.call(null, cljs.core.subs.call(null, a, 0, 1))), cljs.core.str(clojure.string.lower_case.call(null, cljs.core.subs.call(null, a, 1)))].join("")
+};
+clojure.string.split = function() {
+  var a = null, b = function(a, b) {
+    return cljs.core.vec.call(null, ("" + cljs.core.str(a)).split(b))
+  }, c = function(a, b, c) {
+    if(1 > c) {
+      return cljs.core.vec.call(null, ("" + cljs.core.str(a)).split(b))
+    }
+    for(var g = cljs.core.PersistentVector.EMPTY;;) {
+      if(cljs.core._EQ_.call(null, c, 1)) {
+        return cljs.core.conj.call(null, g, a)
+      }
+      var h = cljs.core.re_find.call(null, b, a);
+      if(cljs.core.truth_(h)) {
+        var i = h, h = a.indexOf(i), i = a.substring(h + cljs.core.count.call(null, i)), c = c - 1, g = cljs.core.conj.call(null, g, a.substring(0, h)), a = i
+      }else {
+        return cljs.core.conj.call(null, g, a)
+      }
+    }
+  }, a = function(a, e, f) {
+    switch(arguments.length) {
+      case 2:
+        return b.call(this, a, e);
+      case 3:
+        return c.call(this, a, e, f)
+    }
+    throw"Invalid arity: " + arguments.length;
+  };
+  a.cljs$lang$arity$2 = b;
+  a.cljs$lang$arity$3 = c;
+  return a
+}();
+clojure.string.split_lines = function(a) {
+  return clojure.string.split.call(null, a, /\n|\r\n/)
+};
+clojure.string.trim = function(a) {
+  return goog.string.trim(a)
+};
+clojure.string.triml = function(a) {
+  return goog.string.trimLeft(a)
+};
+clojure.string.trimr = function(a) {
+  return goog.string.trimRight(a)
+};
+clojure.string.trim_newline = function(a) {
+  for(var b = a.length;;) {
+    if(0 === b) {
+      return""
+    }
+    var c = cljs.core._lookup.call(null, a, b - 1, null);
+    var d = cljs.core._EQ_.call(null, c, "\n"), c = d ? d : cljs.core._EQ_.call(null, c, "\r");
+    if(c) {
+      b -= 1
+    }else {
+      return a.substring(0, b)
+    }
+  }
+};
+clojure.string.blank_QMARK_ = function(a) {
+  var b = "" + cljs.core.str(a);
+  return cljs.core.truth_(function() {
+    var a = cljs.core.not.call(null, b);
+    return a ? a : (a = cljs.core._EQ_.call(null, "", b)) ? a : cljs.core.re_matches.call(null, /\s+/, b)
+  }()) ? !0 : !1
+};
+clojure.string.escape = function(a, b) {
+  for(var c = new goog.string.StringBuffer, d = a.length, e = 0;;) {
+    if(cljs.core._EQ_.call(null, d, e)) {
+      return c.toString()
+    }
+    var f = a.charAt(e), g = cljs.core._lookup.call(null, b, f, null);
+    cljs.core.truth_(g) ? c.append("" + cljs.core.str(g)) : c.append(f);
+    e += 1
+  }
+};
+jayq.core = {};
+jayq.core.crate_meta = function(a) {
+  return a.prototype._crateGroup
+};
+jayq.core.__GT_selector = function(a) {
+  if(cljs.core.string_QMARK_.call(null, a)) {
+    return a
+  }
+  if(cljs.core.fn_QMARK_.call(null, a)) {
+    var b = jayq.core.crate_meta.call(null, a);
+    return cljs.core.truth_(b) ? [cljs.core.str("[crateGroup="), cljs.core.str(b), cljs.core.str("]")].join("") : a
+  }
+  return cljs.core.keyword_QMARK_.call(null, a) ? cljs.core.name.call(null, a) : a
+};
+jayq.core.$ = function() {
+  var a = function(a, b) {
+    var e = cljs.core.nth.call(null, b, 0, null);
+    return cljs.core.not.call(null, e) ? jQuery(jayq.core.__GT_selector.call(null, a)) : jQuery(jayq.core.__GT_selector.call(null, a), e)
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jQuery.prototype.cljs$core$IReduce$ = !0;
+jQuery.prototype.cljs$core$IReduce$_reduce$arity$2 = function(a, b) {
+  return cljs.core.ci_reduce.call(null, a, b)
+};
+jQuery.prototype.cljs$core$IReduce$_reduce$arity$3 = function(a, b, c) {
+  return cljs.core.ci_reduce.call(null, a, b, c)
+};
+jQuery.prototype.cljs$core$ILookup$ = !0;
+jQuery.prototype.cljs$core$ILookup$_lookup$arity$2 = function(a, b) {
+  var c = a.slice(b, b + 1);
+  return cljs.core.truth_(c) ? c : null
+};
+jQuery.prototype.cljs$core$ILookup$_lookup$arity$3 = function(a, b, c) {
+  return cljs.core._nth.call(null, a, b, c)
+};
+jQuery.prototype.cljs$core$ISequential$ = !0;
+jQuery.prototype.cljs$core$IIndexed$ = !0;
+jQuery.prototype.cljs$core$IIndexed$_nth$arity$2 = function(a, b) {
+  return b < cljs.core.count.call(null, a) ? a.slice(b, b + 1) : null
+};
+jQuery.prototype.cljs$core$IIndexed$_nth$arity$3 = function(a, b, c) {
+  return b < cljs.core.count.call(null, a) ? a.slice(b, b + 1) : void 0 === c ? null : c
+};
+jQuery.prototype.cljs$core$ICounted$ = !0;
+jQuery.prototype.cljs$core$ICounted$_count$arity$1 = function(a) {
+  return a.size()
+};
+jQuery.prototype.cljs$core$ISeq$ = !0;
+jQuery.prototype.cljs$core$ISeq$_first$arity$1 = function(a) {
+  return a.get(0)
+};
+jQuery.prototype.cljs$core$ISeq$_rest$arity$1 = function(a) {
+  return 1 < cljs.core.count.call(null, a) ? a.slice(1) : cljs.core.list.call(null)
+};
+jQuery.prototype.cljs$core$ISeqable$ = !0;
+jQuery.prototype.cljs$core$ISeqable$_seq$arity$1 = function(a) {
+  return cljs.core.truth_(a.get(0)) ? a : null
+};
+jQuery.prototype.call = function() {
+  var a = null;
+  return a = function(a, c, d) {
+    switch(arguments.length) {
+      case 2:
+        return cljs.core._lookup.call(null, this, c);
+      case 3:
+        return cljs.core._lookup.call(null, this, c, d)
+    }
+    throw"Invalid arity: " + arguments.length;
+  }
+}();
+jayq.core.anim = function(a, b, c) {
+  return a.animate(jayq.util.clj__GT_js.call(null, b), c)
+};
+jayq.core.text = function(a, b) {
+  return a.text(b)
+};
+jayq.core.css = function(a, b) {
+  return cljs.core.keyword_QMARK_.call(null, b) ? a.css(cljs.core.name.call(null, b)) : a.css(jayq.util.clj__GT_js.call(null, b))
+};
+jayq.core.attr = function() {
+  var a = function(a, b, e) {
+    e = cljs.core.nth.call(null, e, 0, null);
+    b = cljs.core.name.call(null, b);
+    return cljs.core.not.call(null, e) ? a.attr(b) : a.attr(b, e)
+  }, b = function(b, d, e) {
+    var f = null;
+    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
+    return a.call(this, b, d, f)
+  };
+  b.cljs$lang$maxFixedArity = 2;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
+    return a(d, e, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.remove_attr = function(a, b) {
+  return a.removeAttr(cljs.core.name.call(null, b))
+};
+jayq.core.data = function() {
+  var a = function(a, b, e) {
+    e = cljs.core.nth.call(null, e, 0, null);
+    b = cljs.core.name.call(null, b);
+    return cljs.core.not.call(null, e) ? a.data(b) : a.data(b, e)
+  }, b = function(b, d, e) {
+    var f = null;
+    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
+    return a.call(this, b, d, f)
+  };
+  b.cljs$lang$maxFixedArity = 2;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
+    return a(d, e, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.position = function(a) {
+  return cljs.core.js__GT_clj.call(null, a.position(), "\ufdd0'keywordize-keys", !0)
+};
+jayq.core.add_class = function(a, b) {
+  var c = cljs.core.name.call(null, b);
+  return a.addClass(c)
+};
+jayq.core.remove_class = function(a, b) {
+  var c = cljs.core.name.call(null, b);
+  return a.removeClass(c)
+};
+jayq.core.toggle_class = function(a, b) {
+  var c = cljs.core.name.call(null, b);
+  return a.toggleClass(c)
+};
+jayq.core.has_class = function(a, b) {
+  var c = cljs.core.name.call(null, b);
+  return a.hasClass(c)
+};
+jayq.core.after = function(a, b) {
+  return a.after(b)
+};
+jayq.core.before = function(a, b) {
+  return a.before(b)
+};
+jayq.core.append = function(a, b) {
+  return a.append(b)
+};
+jayq.core.prepend = function(a, b) {
+  return a.prepend(b)
+};
+jayq.core.remove = function(a) {
+  return a.remove()
+};
+jayq.core.hide = function() {
+  var a = function(a, b) {
+    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
+    return a.hide(e, f)
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.show = function() {
+  var a = function(a, b) {
+    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
+    return a.show(e, f)
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.toggle = function() {
+  var a = function(a, b) {
+    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
+    return a.toggle(e, f)
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.fade_out = function() {
+  var a = function(a, b) {
+    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
+    return a.fadeOut(e, f)
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.fade_in = function() {
+  var a = function(a, b) {
+    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
+    return a.fadeIn(e, f)
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.slide_up = function() {
+  var a = function(a, b) {
+    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
+    return a.slideUp(e, f)
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.slide_down = function() {
+  var a = function(a, b) {
+    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
+    return a.slideDown(e, f)
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.parent = function(a) {
+  return a.parent()
+};
+jayq.core.find = function(a, b) {
+  return a.find(cljs.core.name.call(null, b))
+};
+jayq.core.closest = function() {
+  var a = function(a, b, e) {
+    e = cljs.core.nth.call(null, e, 0, null);
+    return a.closest(b, e)
+  }, b = function(b, d, e) {
+    var f = null;
+    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
+    return a.call(this, b, d, f)
+  };
+  b.cljs$lang$maxFixedArity = 2;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
+    return a(d, e, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.clone = function(a) {
+  return a.clone()
+};
+jayq.core.inner = function(a, b) {
+  return a.html(b)
+};
+jayq.core.empty = function(a) {
+  return a.empty()
+};
+jayq.core.val = function() {
+  var a = function(a, b) {
+    var e = cljs.core.nth.call(null, b, 0, null);
+    return cljs.core.truth_(e) ? a.val(e) : a.val()
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.serialize = function(a) {
+  return a.serialize()
+};
+jayq.core.queue = function(a, b) {
+  return a.queue(b)
+};
+jayq.core.dequeue = function(a) {
+  return jayq.core.$.call(null, a).dequeue()
+};
+jayq.core.document_ready = function(a) {
+  return jayq.core.$.call(null, document).ready(a)
+};
+jayq.core.xhr = function(a, b, c) {
+  var d = cljs.core.nth.call(null, a, 0, null), a = cljs.core.nth.call(null, a, 1, null), b = jayq.util.clj__GT_js.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'type", "\ufdd0'data", "\ufdd0'success"], {"\ufdd0'type":clojure.string.upper_case.call(null, cljs.core.name.call(null, d)), "\ufdd0'data":jayq.util.clj__GT_js.call(null, b), "\ufdd0'success":c}));
+  return jQuery.ajax(a, b)
+};
+jayq.core.ajax = function() {
+  var a = null, b = function(a) {
+    return jQuery.ajax(jayq.util.clj__GT_js.call(null, a))
+  }, c = function(a, b) {
+    return jQuery.ajax(a, jayq.util.clj__GT_js.call(null, b))
+  }, a = function(a, e) {
+    switch(arguments.length) {
+      case 1:
+        return b.call(this, a);
+      case 2:
+        return c.call(this, a, e)
+    }
+    throw"Invalid arity: " + arguments.length;
+  };
+  a.cljs$lang$arity$1 = b;
+  a.cljs$lang$arity$2 = c;
+  return a
+}();
+jayq.core.bind = function(a, b, c) {
+  return a.bind(cljs.core.name.call(null, b), c)
+};
+jayq.core.unbind = function() {
+  var a = function(a, b, e) {
+    e = cljs.core.nth.call(null, e, 0, null);
+    return a.unbind(cljs.core.name.call(null, b), e)
+  }, b = function(b, d, e) {
+    var f = null;
+    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
+    return a.call(this, b, d, f)
+  };
+  b.cljs$lang$maxFixedArity = 2;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
+    return a(d, e, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.trigger = function(a, b) {
+  return a.trigger(cljs.core.name.call(null, b))
+};
+jayq.core.delegate = function(a, b, c, d) {
+  return a.delegate(jayq.core.__GT_selector.call(null, b), cljs.core.name.call(null, c), d)
+};
+jayq.core.__GT_event = function(a) {
+  if(cljs.core.keyword_QMARK_.call(null, a)) {
+    return cljs.core.name.call(null, a)
+  }
+  if(cljs.core.map_QMARK_.call(null, a)) {
+    return jayq.util.clj__GT_js.call(null, a)
+  }
+  if(cljs.core.coll_QMARK_.call(null, a)) {
+    return clojure.string.join.call(null, " ", cljs.core.map.call(null, cljs.core.name, a))
+  }
+  throw Error([cljs.core.str("Unknown event type: "), cljs.core.str(a)].join(""));
+};
+jayq.core.on = function() {
+  var a = function(a, b, e) {
+    var f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null), e = cljs.core.nth.call(null, e, 2, null);
+    return a.on(jayq.core.__GT_event.call(null, b), jayq.core.__GT_selector.call(null, f), g, e)
+  }, b = function(b, d, e) {
+    var f = null;
+    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
+    return a.call(this, b, d, f)
+  };
+  b.cljs$lang$maxFixedArity = 2;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
+    return a(d, e, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.one = function() {
+  var a = function(a, b, e) {
+    var f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null), e = cljs.core.nth.call(null, e, 2, null);
+    return a.one(jayq.core.__GT_event.call(null, b), jayq.core.__GT_selector.call(null, f), g, e)
+  }, b = function(b, d, e) {
+    var f = null;
+    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
+    return a.call(this, b, d, f)
+  };
+  b.cljs$lang$maxFixedArity = 2;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
+    return a(d, e, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.off = function() {
+  var a = function(a, b, e) {
+    var f = cljs.core.nth.call(null, e, 0, null), e = cljs.core.nth.call(null, e, 1, null);
+    return a.off(jayq.core.__GT_event.call(null, b), jayq.core.__GT_selector.call(null, f), e)
+  }, b = function(b, d, e) {
+    var f = null;
+    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
+    return a.call(this, b, d, f)
+  };
+  b.cljs$lang$maxFixedArity = 2;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
+    return a(d, e, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+jayq.core.prevent = function(a) {
+  return a.preventDefault()
+};
+clojure.browser = {};
+clojure.browser.event = {};
+clojure.browser.event.EventType = {};
+clojure.browser.event.event_types = function(a) {
+  if(a ? a.clojure$browser$event$EventType$event_types$arity$1 : a) {
+    return a.clojure$browser$event$EventType$event_types$arity$1(a)
+  }
+  var b;
+  b = clojure.browser.event.event_types[goog.typeOf(null == a ? null : a)];
+  if(!b && (b = clojure.browser.event.event_types._, !b)) {
+    throw cljs.core.missing_protocol.call(null, "EventType.event-types", a);
+  }
+  return b.call(null, a)
+};
+Element.prototype.clojure$browser$event$EventType$ = !0;
+Element.prototype.clojure$browser$event$EventType$event_types$arity$1 = function() {
+  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(a) {
+    var b = cljs.core.nth.call(null, a, 0, null), a = cljs.core.nth.call(null, a, 1, null);
+    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, b.toLowerCase()), a], !0)
+  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.events.EventType))))
+};
+goog.events.EventTarget.prototype.clojure$browser$event$EventType$ = !0;
+goog.events.EventTarget.prototype.clojure$browser$event$EventType$event_types$arity$1 = function() {
+  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(a) {
+    var b = cljs.core.nth.call(null, a, 0, null), a = cljs.core.nth.call(null, a, 1, null);
+    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, b.toLowerCase()), a], !0)
+  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.events.EventType))))
+};
+clojure.browser.event.listen = function() {
+  var a = null, b = function(b, c, f) {
+    return a.call(null, b, c, f, !1)
+  }, c = function(a, b, c, g) {
+    return goog.events.listen(a, cljs.core._lookup.call(null, clojure.browser.event.event_types.call(null, a), b, b), c, g)
+  }, a = function(a, e, f, g) {
+    switch(arguments.length) {
+      case 3:
+        return b.call(this, a, e, f);
+      case 4:
+        return c.call(this, a, e, f, g)
+    }
+    throw"Invalid arity: " + arguments.length;
+  };
+  a.cljs$lang$arity$3 = b;
+  a.cljs$lang$arity$4 = c;
+  return a
+}();
+clojure.browser.event.listen_once = function() {
+  var a = null, b = function(b, c, f) {
+    return a.call(null, b, c, f, !1)
+  }, c = function(a, b, c, g) {
+    return goog.events.listenOnce(a, cljs.core._lookup.call(null, clojure.browser.event.event_types.call(null, a), b, b), c, g)
+  }, a = function(a, e, f, g) {
+    switch(arguments.length) {
+      case 3:
+        return b.call(this, a, e, f);
+      case 4:
+        return c.call(this, a, e, f, g)
+    }
+    throw"Invalid arity: " + arguments.length;
+  };
+  a.cljs$lang$arity$3 = b;
+  a.cljs$lang$arity$4 = c;
+  return a
+}();
+clojure.browser.event.unlisten = function() {
+  var a = null, b = function(b, c, f) {
+    return a.call(null, b, c, f, !1)
+  }, c = function(a, b, c, g) {
+    return goog.events.unlisten(a, cljs.core._lookup.call(null, clojure.browser.event.event_types.call(null, a), b, b), c, g)
+  }, a = function(a, e, f, g) {
+    switch(arguments.length) {
+      case 3:
+        return b.call(this, a, e, f);
+      case 4:
+        return c.call(this, a, e, f, g)
+    }
+    throw"Invalid arity: " + arguments.length;
+  };
+  a.cljs$lang$arity$3 = b;
+  a.cljs$lang$arity$4 = c;
+  return a
+}();
+clojure.browser.event.unlisten_by_key = function(a) {
+  return goog.events.unlistenByKey(a)
+};
+clojure.browser.event.dispatch_event = function(a, b) {
+  return goog.events.dispatchEvent(a, b)
+};
+clojure.browser.event.expose = function(a) {
+  return goog.events.expose(a)
+};
+clojure.browser.event.fire_listeners = function() {
+  return null
+};
+clojure.browser.event.total_listener_count = function() {
+  return goog.events.getTotalListenerCount()
+};
+clojure.browser.event.get_listener = function() {
+  return null
+};
+clojure.browser.event.all_listeners = function() {
+  return null
+};
+clojure.browser.event.unique_event_id = function() {
+  return null
+};
+clojure.browser.event.has_listener = function() {
+  return null
+};
+clojure.browser.event.remove_all = function() {
+  return null
+};
 goog.Uri = function(a, b) {
   var c;
   a instanceof goog.Uri ? (this.setIgnoreCase(null == b ? a.getIgnoreCase() : b), this.setScheme(a.getScheme()), this.setUserInfo(a.getUserInfo()), this.setDomain(a.getDomain()), this.setPort(a.getPort()), this.setPath(a.getPath()), this.setQueryData(a.getQueryData().clone()), this.setFragment(a.getFragment())) : a && (c = goog.uri.utils.split("" + a)) ? (this.setIgnoreCase(!!b), this.setScheme(c[goog.uri.utils.ComponentIndex.SCHEME] || "", !0), this.setUserInfo(c[goog.uri.utils.ComponentIndex.USER_INFO] || 
@@ -18193,178 +18882,6 @@ goog.Uri.QueryData.prototype.extend = function(a) {
       this.add(b, a)
     }, this)
   }
-};
-goog.net.Jsonp = function(a, b) {
-  this.uri_ = new goog.Uri(a);
-  this.callbackParamName_ = b ? b : "callback";
-  this.timeout_ = 5E3
-};
-goog.net.Jsonp.CALLBACKS = "_callbacks_";
-goog.net.Jsonp.scriptCounter_ = 0;
-goog.net.Jsonp.prototype.setRequestTimeout = function(a) {
-  this.timeout_ = a
-};
-goog.net.Jsonp.prototype.getRequestTimeout = function() {
-  return this.timeout_
-};
-goog.net.Jsonp.prototype.send = function(a, b, c, d) {
-  a = a || null;
-  if(!document.documentElement.firstChild) {
-    return c && c(a), null
-  }
-  d = d || "_" + (goog.net.Jsonp.scriptCounter_++).toString(36) + goog.now().toString(36);
-  goog.global[goog.net.Jsonp.CALLBACKS] || (goog.global[goog.net.Jsonp.CALLBACKS] = {});
-  var e = goog.dom.createElement("script"), f = null;
-  0 < this.timeout_ && (c = goog.net.Jsonp.newErrorHandler_(d, e, a, c), f = goog.global.setTimeout(c, this.timeout_));
-  c = this.uri_.clone();
-  a && goog.net.Jsonp.addPayloadToUri_(a, c);
-  b && (b = goog.net.Jsonp.newReplyHandler_(d, e, b, f), goog.global[goog.net.Jsonp.CALLBACKS][d] = b, c.setParameterValues(this.callbackParamName_, goog.net.Jsonp.CALLBACKS + "." + d));
-  goog.dom.setProperties(e, {type:"text/javascript", id:d, charset:"UTF-8", src:c.toString()});
-  goog.dom.appendChild(document.getElementsByTagName("head")[0], e);
-  return{id_:d, timeout_:f}
-};
-goog.net.Jsonp.prototype.cancel = function(a) {
-  if(a && a.id_) {
-    var b = goog.dom.getElement(a.id_);
-    b && ("SCRIPT" == b.tagName && "function" == typeof goog.global[goog.net.Jsonp.CALLBACKS][a.id_]) && (a.timeout_ && goog.global.clearTimeout(a.timeout_), goog.net.Jsonp.cleanup_(a.id_, b, !1))
-  }
-};
-goog.net.Jsonp.newErrorHandler_ = function(a, b, c, d) {
-  return function() {
-    goog.net.Jsonp.cleanup_(a, b, !1);
-    d && d(c)
-  }
-};
-goog.net.Jsonp.newReplyHandler_ = function(a, b, c, d) {
-  return function(e) {
-    goog.global.clearTimeout(d);
-    goog.net.Jsonp.cleanup_(a, b, !0);
-    c.apply(void 0, arguments)
-  }
-};
-goog.net.Jsonp.cleanup_ = function(a, b, c) {
-  goog.global.setTimeout(function() {
-    goog.dom.removeNode(b)
-  }, 0);
-  goog.global[goog.net.Jsonp.CALLBACKS][a] && (c ? delete goog.global[goog.net.Jsonp.CALLBACKS][a] : goog.global[goog.net.Jsonp.CALLBACKS][a] = goog.nullFunction)
-};
-goog.net.Jsonp.addPayloadToUri_ = function(a, b) {
-  for(var c in a) {
-    (!a.hasOwnProperty || a.hasOwnProperty(c)) && b.setParameterValues(c, a[c])
-  }
-  return b
-};
-var clojure = {browser:{}};
-clojure.browser.event = {};
-clojure.browser.event.EventType = {};
-clojure.browser.event.event_types = function(a) {
-  if(a ? a.clojure$browser$event$EventType$event_types$arity$1 : a) {
-    return a.clojure$browser$event$EventType$event_types$arity$1(a)
-  }
-  var b;
-  b = clojure.browser.event.event_types[goog.typeOf(null == a ? null : a)];
-  if(!b && (b = clojure.browser.event.event_types._, !b)) {
-    throw cljs.core.missing_protocol.call(null, "EventType.event-types", a);
-  }
-  return b.call(null, a)
-};
-Element.prototype.clojure$browser$event$EventType$ = !0;
-Element.prototype.clojure$browser$event$EventType$event_types$arity$1 = function() {
-  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(a) {
-    var b = cljs.core.nth.call(null, a, 0, null), a = cljs.core.nth.call(null, a, 1, null);
-    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, b.toLowerCase()), a], !0)
-  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.events.EventType))))
-};
-goog.events.EventTarget.prototype.clojure$browser$event$EventType$ = !0;
-goog.events.EventTarget.prototype.clojure$browser$event$EventType$event_types$arity$1 = function() {
-  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(a) {
-    var b = cljs.core.nth.call(null, a, 0, null), a = cljs.core.nth.call(null, a, 1, null);
-    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, b.toLowerCase()), a], !0)
-  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.events.EventType))))
-};
-clojure.browser.event.listen = function() {
-  var a = null, b = function(b, c, f) {
-    return a.call(null, b, c, f, !1)
-  }, c = function(a, b, c, g) {
-    return goog.events.listen(a, cljs.core._lookup.call(null, clojure.browser.event.event_types.call(null, a), b, b), c, g)
-  }, a = function(a, e, f, g) {
-    switch(arguments.length) {
-      case 3:
-        return b.call(this, a, e, f);
-      case 4:
-        return c.call(this, a, e, f, g)
-    }
-    throw"Invalid arity: " + arguments.length;
-  };
-  a.cljs$lang$arity$3 = b;
-  a.cljs$lang$arity$4 = c;
-  return a
-}();
-clojure.browser.event.listen_once = function() {
-  var a = null, b = function(b, c, f) {
-    return a.call(null, b, c, f, !1)
-  }, c = function(a, b, c, g) {
-    return goog.events.listenOnce(a, cljs.core._lookup.call(null, clojure.browser.event.event_types.call(null, a), b, b), c, g)
-  }, a = function(a, e, f, g) {
-    switch(arguments.length) {
-      case 3:
-        return b.call(this, a, e, f);
-      case 4:
-        return c.call(this, a, e, f, g)
-    }
-    throw"Invalid arity: " + arguments.length;
-  };
-  a.cljs$lang$arity$3 = b;
-  a.cljs$lang$arity$4 = c;
-  return a
-}();
-clojure.browser.event.unlisten = function() {
-  var a = null, b = function(b, c, f) {
-    return a.call(null, b, c, f, !1)
-  }, c = function(a, b, c, g) {
-    return goog.events.unlisten(a, cljs.core._lookup.call(null, clojure.browser.event.event_types.call(null, a), b, b), c, g)
-  }, a = function(a, e, f, g) {
-    switch(arguments.length) {
-      case 3:
-        return b.call(this, a, e, f);
-      case 4:
-        return c.call(this, a, e, f, g)
-    }
-    throw"Invalid arity: " + arguments.length;
-  };
-  a.cljs$lang$arity$3 = b;
-  a.cljs$lang$arity$4 = c;
-  return a
-}();
-clojure.browser.event.unlisten_by_key = function(a) {
-  return goog.events.unlistenByKey(a)
-};
-clojure.browser.event.dispatch_event = function(a, b) {
-  return goog.events.dispatchEvent(a, b)
-};
-clojure.browser.event.expose = function(a) {
-  return goog.events.expose(a)
-};
-clojure.browser.event.fire_listeners = function() {
-  return null
-};
-clojure.browser.event.total_listener_count = function() {
-  return goog.events.getTotalListenerCount()
-};
-clojure.browser.event.get_listener = function() {
-  return null
-};
-clojure.browser.event.all_listeners = function() {
-  return null
-};
-clojure.browser.event.unique_event_id = function() {
-  return null
-};
-clojure.browser.event.has_listener = function() {
-  return null
-};
-clojure.browser.event.remove_all = function() {
-  return null
 };
 goog.messaging = {};
 goog.messaging.MessageChannel = function() {
@@ -19582,17 +20099,11 @@ shoreleave.common.toggle_brepl = function() {
   return a
 }();
 shoreleave.remotes = {};
-shoreleave.remotes.jsonp = {};
-shoreleave.remotes.jsonp.jsonp = function() {
+shoreleave.remotes.jquery = {};
+shoreleave.remotes.jquery.ajax = function() {
   var a = function(a, b) {
-    var e = cljs.core.seq_QMARK_.call(null, b) ? cljs.core.apply.call(null, cljs.core.hash_map, b) : b, f = cljs.core._lookup.call(null, e, "\ufdd0'timeout-ms", null), g = cljs.core._lookup.call(null, e, "\ufdd0'callback-value", null), h = cljs.core._lookup.call(null, e, "\ufdd0'callback-name", null), i = cljs.core._lookup.call(null, e, "\ufdd0'content", null), j = cljs.core._lookup.call(null, e, "\ufdd0'on-timeout", null), k = cljs.core._lookup.call(null, e, "\ufdd0'on-success", null), e = new goog.net.Jsonp(a, 
-    h), i = cljs.core.truth_(i) ? shoreleave.common.clj__GT_js.call(null, i) : null, h = cljs.core.truth_(k) ? function(a) {
-      return k.call(null, cljs.core.js__GT_clj.call(null, a, "\ufdd0'keywordize-keys", !0))
-    } : null, l = cljs.core.truth_(j) ? function(a) {
-      return j.call(null, cljs.core.js__GT_clj.call(null, a, "\ufdd0'keywordize-keys", !0))
-    } : null;
-    cljs.core.truth_(f) && e.setRequestTimeout(f);
-    return e.send(i, h, l, g)
+    var e = cljs.core.apply.call(null, cljs.core.hash_map, b);
+    return jQuery.ajax(shoreleave.common.clj__GT_js.call(null, cljs.core.assoc.call(null, e, "\ufdd0'url", a)))
   }, b = function(b, d) {
     var e = null;
     goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
@@ -19606,11 +20117,383 @@ shoreleave.remotes.jsonp.jsonp = function() {
   b.cljs$lang$arity$variadic = a;
   return b
 }();
-shoreleave.remotes.jquery = {};
-shoreleave.remotes.jquery.ajax = function() {
+goog.net.Cookies = function(a) {
+  this.document_ = a
+};
+goog.net.Cookies.MAX_COOKIE_LENGTH = 3950;
+goog.net.Cookies.SPLIT_RE_ = /\s*;\s*/;
+goog.net.Cookies.TEST_COOKIE_NAME_ = "COOKIES_TEST_";
+goog.net.Cookies.prototype.isEnabled = function() {
+  var a = this.isNavigatorCookieEnabled_();
+  if(a && goog.userAgent.WEBKIT) {
+    var b = goog.net.Cookies.TEST_COOKIE_NAME_ + goog.now();
+    goog.net.cookies.set(b, "1");
+    if(!this.get(b)) {
+      return!1
+    }
+    this.remove(b)
+  }
+  return a
+};
+goog.net.Cookies.prototype.isValidName = function(a) {
+  return!/[;=\s]/.test(a)
+};
+goog.net.Cookies.prototype.isValidValue = function(a) {
+  return!/[;\r\n]/.test(a)
+};
+goog.net.Cookies.prototype.set = function(a, b, c, d, e, f) {
+  if(!this.isValidName(a)) {
+    throw Error('Invalid cookie name "' + a + '"');
+  }
+  if(!this.isValidValue(b)) {
+    throw Error('Invalid cookie value "' + b + '"');
+  }
+  goog.isDef(c) || (c = -1);
+  e = e ? ";domain=" + e : "";
+  d = d ? ";path=" + d : "";
+  f = f ? ";secure" : "";
+  c = 0 > c ? "" : 0 == c ? ";expires=" + (new Date(1970, 1, 1)).toUTCString() : ";expires=" + (new Date(goog.now() + 1E3 * c)).toUTCString();
+  this.setCookie_(a + "=" + b + e + d + c + f)
+};
+goog.net.Cookies.prototype.get = function(a, b) {
+  for(var c = a + "=", d = this.getParts_(), e = 0, f;f = d[e];e++) {
+    if(0 == f.indexOf(c)) {
+      return f.substr(c.length)
+    }
+  }
+  return b
+};
+goog.net.Cookies.prototype.remove = function(a, b, c) {
+  var d = this.containsKey(a);
+  this.set(a, "", 0, b, c);
+  return d
+};
+goog.net.Cookies.prototype.getKeys = function() {
+  return this.getKeyValues_().keys
+};
+goog.net.Cookies.prototype.getValues = function() {
+  return this.getKeyValues_().values
+};
+goog.net.Cookies.prototype.isEmpty = function() {
+  return!this.getCookie_()
+};
+goog.net.Cookies.prototype.getCount = function() {
+  return!this.getCookie_() ? 0 : this.getParts_().length
+};
+goog.net.Cookies.prototype.containsKey = function(a) {
+  return goog.isDef(this.get(a))
+};
+goog.net.Cookies.prototype.containsValue = function(a) {
+  for(var b = this.getKeyValues_().values, c = 0;c < b.length;c++) {
+    if(b[c] == a) {
+      return!0
+    }
+  }
+  return!1
+};
+goog.net.Cookies.prototype.clear = function() {
+  for(var a = this.getKeyValues_().keys, b = a.length - 1;0 <= b;b--) {
+    this.remove(a[b])
+  }
+};
+goog.net.Cookies.prototype.setCookie_ = function(a) {
+  this.document_.cookie = a
+};
+goog.net.Cookies.prototype.getCookie_ = function() {
+  return this.document_.cookie
+};
+goog.net.Cookies.prototype.getParts_ = function() {
+  return(this.getCookie_() || "").split(goog.net.Cookies.SPLIT_RE_)
+};
+goog.net.Cookies.prototype.isNavigatorCookieEnabled_ = function() {
+  return navigator.cookieEnabled
+};
+goog.net.Cookies.prototype.getKeyValues_ = function() {
+  for(var a = this.getParts_(), b = [], c = [], d, e, f = 0;e = a[f];f++) {
+    d = e.indexOf("="), -1 == d ? (b.push(""), c.push(e)) : (b.push(e.substring(0, d)), c.push(e.substring(d + 1)))
+  }
+  return{keys:b, values:c}
+};
+goog.net.cookies = new goog.net.Cookies(document);
+goog.net.cookies.MAX_COOKIE_LENGTH = goog.net.Cookies.MAX_COOKIE_LENGTH;
+shoreleave.browser.cookies = {};
+goog.net.Cookies.prototype.cljs$core$IHash$ = !0;
+goog.net.Cookies.prototype.cljs$core$IHash$_hash$arity$1 = function(a) {
+  return cljs.core._hash.call(null, cljs.core._persistent_BANG_.call(null, a))
+};
+goog.net.Cookies.prototype.cljs$core$ILookup$ = !0;
+goog.net.Cookies.prototype.cljs$core$ILookup$_lookup$arity$2 = function(a, b) {
+  return cljs.core._lookup.call(null, a, b, null)
+};
+goog.net.Cookies.prototype.cljs$core$ILookup$_lookup$arity$3 = function(a, b, c) {
+  return goog.string.urlDecode(a.get(cljs.core.name.call(null, b), c))
+};
+goog.net.Cookies.prototype.cljs$core$IAssociative$ = !0;
+goog.net.Cookies.prototype.cljs$core$IAssociative$_assoc$arity$3 = function(a, b, c) {
+  return cljs.core._assoc.call(null, cljs.core._persistent_BANG_.call(null, a), b, c)
+};
+goog.net.Cookies.prototype.cljs$core$IAssociative$_contains_key_QMARK_$arity$2 = function(a, b) {
+  return a.containsKey(cljs.core.name.call(null, b))
+};
+goog.net.Cookies.prototype.cljs$core$IFn$ = !0;
+goog.net.Cookies.prototype.call = function() {
+  var a = null;
+  return a = function(a, c, d) {
+    switch(arguments.length) {
+      case 2:
+        return cljs.core._lookup.call(null, this, c);
+      case 3:
+        return cljs.core._lookup.call(null, this, c, d)
+    }
+    throw"Invalid arity: " + arguments.length;
+  }
+}();
+goog.net.Cookies.prototype.apply = function(a, b) {
+  return a.call.apply(a, [a].concat(b.slice()))
+};
+goog.net.Cookies.prototype.cljs$core$ITransientMap$ = !0;
+goog.net.Cookies.prototype.cljs$core$ITransientMap$_dissoc_BANG_$arity$4 = function() {
+  var a = function(a, b, e) {
+    var f = a.isValidName(cljs.core.name.call(null, b)), b = cljs.core.truth_(f) ? cljs.core.name.call(null, b) : f;
+    return cljs.core.truth_(b) ? (e = cljs.core.apply.call(null, cljs.core.hash_map, e), f = cljs.core.seq_QMARK_.call(null, e) ? cljs.core.apply.call(null, cljs.core.hash_map, e) : e, e = cljs.core._lookup.call(null, f, "\ufdd0'domain", null), f = cljs.core._lookup.call(null, f, "\ufdd0'path", null), a.remove(b, f, e)) : null
+  }, b = function(b, d, e) {
+    var f = null;
+    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
+    return a.call(this, b, d, f)
+  };
+  b.cljs$lang$maxFixedArity = 2;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
+    return a(d, e, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+goog.net.Cookies.prototype.cljs$core$ISeqable$ = !0;
+goog.net.Cookies.prototype.cljs$core$ISeqable$_seq$arity$1 = function(a) {
+  return cljs.core.map.call(null, cljs.core.vector, a.getKeys(), a.getValues())
+};
+goog.net.Cookies.prototype.cljs$core$IPrintable$ = !0;
+goog.net.Cookies.prototype.cljs$core$IPrintable$_pr_seq$arity$2 = function(a, b) {
+  return cljs.core._pr_seq.call(null, cljs.core._persistent_BANG_.call(null, a), b)
+};
+goog.net.Cookies.prototype.cljs$core$ICounted$ = !0;
+goog.net.Cookies.prototype.cljs$core$ICounted$_count$arity$1 = function(a) {
+  return a.getCount()
+};
+goog.net.Cookies.prototype.cljs$core$ITransientCollection$ = !0;
+goog.net.Cookies.prototype.cljs$core$ITransientCollection$_persistent_BANG_$arity$1 = function(a) {
+  return shoreleave.browser.cookies.as_hash_map.call(null, a)
+};
+goog.net.Cookies.prototype.cljs$core$ITransientAssociative$ = !0;
+goog.net.Cookies.prototype.cljs$core$ITransientAssociative$_assoc_BANG_$arity$5 = function() {
+  var a = function(a, b, e, f) {
+    var g = a.isValidName(cljs.core.name.call(null, b)), b = cljs.core.truth_(g) ? cljs.core.name.call(null, b) : g;
+    if(cljs.core.truth_(b)) {
+      var f = cljs.core.apply.call(null, cljs.core.hash_map, f), h = cljs.core.seq_QMARK_.call(null, f) ? cljs.core.apply.call(null, cljs.core.hash_map, f) : f, f = cljs.core._lookup.call(null, h, "\ufdd0'secure?", null), g = cljs.core._lookup.call(null, h, "\ufdd0'domain", null), i = cljs.core._lookup.call(null, h, "\ufdd0'path", null), h = cljs.core._lookup.call(null, h, "\ufdd0'max-age", null);
+      return a.set(b, e, h, i, g, f)
+    }
+    return null
+  }, b = function(b, d, e, f) {
+    var g = null;
+    goog.isDef(f) && (g = cljs.core.array_seq(Array.prototype.slice.call(arguments, 3), 0));
+    return a.call(this, b, d, e, g)
+  };
+  b.cljs$lang$maxFixedArity = 3;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), f = cljs.core.first(cljs.core.next(cljs.core.next(b))), b = cljs.core.rest(cljs.core.next(cljs.core.next(b)));
+    return a(d, e, f, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+shoreleave.browser.cookies.cookies = new goog.net.Cookies(document);
+shoreleave.browser.cookies.as_hash_map = function() {
+  var a = null, b = function() {
+    return a.call(null, shoreleave.browser.cookies.cookies)
+  }, c = function(a) {
+    return cljs.core.zipmap.call(null, a.getKeys(), a.getValues())
+  }, a = function(a) {
+    switch(arguments.length) {
+      case 0:
+        return b.call(this);
+      case 1:
+        return c.call(this, a)
+    }
+    throw"Invalid arity: " + arguments.length;
+  };
+  a.cljs$lang$arity$0 = b;
+  a.cljs$lang$arity$1 = c;
+  return a
+}();
+shoreleave.browser.cookies.cookies_enabled_QMARK_ = function() {
+  var a = null, b = function() {
+    return a.call(null, shoreleave.browser.cookies.cookies)
+  }, c = function(a) {
+    return a.isEnabled()
+  }, a = function(a) {
+    switch(arguments.length) {
+      case 0:
+        return b.call(this);
+      case 1:
+        return c.call(this, a)
+    }
+    throw"Invalid arity: " + arguments.length;
+  };
+  a.cljs$lang$arity$0 = b;
+  a.cljs$lang$arity$1 = c;
+  return a
+}();
+shoreleave.browser.cookies.empty_BANG_ = function(a) {
+  return a.clear()
+};
+shoreleave.remotes.common = {};
+shoreleave.remotes.common.rand_id_str = function() {
+  return goog.string.getRandomString()
+};
+shoreleave.remotes.common.__GT_url_method = function(a) {
+  return clojure.string.upper_case.call(null, cljs.core.name.call(null, a))
+};
+shoreleave.remotes.common.parse_route = function(a) {
+  if(cljs.core.string_QMARK_.call(null, a)) {
+    return cljs.core.PersistentVector.fromArray(["GET", a], !0)
+  }
+  if(cljs.core.vector_QMARK_.call(null, a)) {
+    var b = cljs.core.nth.call(null, a, 0, null), a = cljs.core.nth.call(null, a, 1, null);
+    return cljs.core.PersistentVector.fromArray([shoreleave.remotes.common.__GT_url_method.call(null, b), a], !0)
+  }
+  return cljs.core.PersistentVector.fromArray(["GET", a], !0)
+};
+shoreleave.remotes.common.__GT_simple_callback = function(a) {
+  return cljs.core.truth_(a) ? function(b) {
+    b = b.getResponseText();
+    return a.call(null, b)
+  } : null
+};
+shoreleave.remotes.common.csrf_protected = function(a, b) {
+  var c;
+  c = (c = cljs.core._EQ_.call(null, b, "POST")) ? (new cljs.core.Keyword("\ufdd0'__anti-forgery-token")).call(null, shoreleave.browser.cookies.cookies) : c;
+  return cljs.core.truth_(c) ? cljs.core.merge.call(null, a, cljs.core.ObjMap.fromObject(["\ufdd0'__anti-forgery-token"], {"\ufdd0'__anti-forgery-token":c})) : a
+};
+shoreleave.remotes.common.__GT_data_str = function(a) {
+  a = shoreleave.common.clj__GT_js.call(null, a);
+  a = goog.Uri.QueryData.createFromMap(new goog.structs.Map(a));
+  return"" + cljs.core.str(a)
+};
+shoreleave.remotes.xhr = {};
+shoreleave.remotes.xhr.xhr = function() {
   var a = function(a, b) {
-    var e = cljs.core.apply.call(null, cljs.core.hash_map, b);
-    return jQuery.ajax(shoreleave.common.clj__GT_js.call(null, cljs.core.assoc.call(null, e, "\ufdd0'url", a)))
+    var e = new goog.net.XhrIo, f = shoreleave.remotes.common.parse_route.call(null, a), g = cljs.core.nth.call(null, f, 0, null), f = cljs.core.nth.call(null, f, 1, null), h = cljs.core.apply.call(null, cljs.core.hash_map, b), i = cljs.core.seq_QMARK_.call(null, h) ? cljs.core.apply.call(null, cljs.core.hash_map, h) : h, h = cljs.core._lookup.call(null, i, "\ufdd0'headers", null), j = cljs.core._lookup.call(null, i, "\ufdd0'content", null), i = cljs.core._lookup.call(null, i, "\ufdd0'on-success", 
+    null), j = shoreleave.remotes.common.csrf_protected.call(null, j, g), j = shoreleave.remotes.common.__GT_data_str.call(null, j), k = shoreleave.remotes.common.__GT_simple_callback.call(null, i);
+    cljs.core.truth_(k) && goog.events.listen(e, goog.net.EventType.COMPLETE, function() {
+      return k.call(null, e)
+    });
+    return e.send(f, g, j, cljs.core.truth_(h) ? shoreleave.common.clj__GT_js.call(null, h) : null)
+  }, b = function(b, d) {
+    var e = null;
+    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+shoreleave.remotes.http_rpc = {};
+shoreleave.remotes.http_rpc._STAR_remote_uri_STAR_ = "/_fetch";
+shoreleave.remotes.http_rpc.remote_callback = function() {
+  var a = function(a, b, e, f) {
+    return shoreleave.remotes.xhr.xhr.call(null, cljs.core.PersistentVector.fromArray(["\ufdd0'post", shoreleave.remotes.http_rpc._STAR_remote_uri_STAR_], !0), "\ufdd0'content", cljs.core.merge.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'remote", "\ufdd0'params"], {"\ufdd0'remote":a, "\ufdd0'params":cljs.core.pr_str.call(null, b)}), cljs.core.apply.call(null, cljs.core.hash_map, f)), "\ufdd0'on-success", cljs.core.truth_(e) ? function(a) {
+      a = cljs.core._EQ_.call(null, a, "") ? "nil" : a;
+      return e.call(null, cljs.reader.read_string.call(null, a))
+    } : null)
+  }, b = function(b, d, e, f) {
+    var g = null;
+    goog.isDef(f) && (g = cljs.core.array_seq(Array.prototype.slice.call(arguments, 3), 0));
+    return a.call(this, b, d, e, g)
+  };
+  b.cljs$lang$maxFixedArity = 3;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), f = cljs.core.first(cljs.core.next(cljs.core.next(b))), b = cljs.core.rest(cljs.core.next(cljs.core.next(b)));
+    return a(d, e, f, b)
+  };
+  b.cljs$lang$arity$variadic = a;
+  return b
+}();
+goog.net.Jsonp = function(a, b) {
+  this.uri_ = new goog.Uri(a);
+  this.callbackParamName_ = b ? b : "callback";
+  this.timeout_ = 5E3
+};
+goog.net.Jsonp.CALLBACKS = "_callbacks_";
+goog.net.Jsonp.scriptCounter_ = 0;
+goog.net.Jsonp.prototype.setRequestTimeout = function(a) {
+  this.timeout_ = a
+};
+goog.net.Jsonp.prototype.getRequestTimeout = function() {
+  return this.timeout_
+};
+goog.net.Jsonp.prototype.send = function(a, b, c, d) {
+  a = a || null;
+  if(!document.documentElement.firstChild) {
+    return c && c(a), null
+  }
+  d = d || "_" + (goog.net.Jsonp.scriptCounter_++).toString(36) + goog.now().toString(36);
+  goog.global[goog.net.Jsonp.CALLBACKS] || (goog.global[goog.net.Jsonp.CALLBACKS] = {});
+  var e = goog.dom.createElement("script"), f = null;
+  0 < this.timeout_ && (c = goog.net.Jsonp.newErrorHandler_(d, e, a, c), f = goog.global.setTimeout(c, this.timeout_));
+  c = this.uri_.clone();
+  a && goog.net.Jsonp.addPayloadToUri_(a, c);
+  b && (b = goog.net.Jsonp.newReplyHandler_(d, e, b, f), goog.global[goog.net.Jsonp.CALLBACKS][d] = b, c.setParameterValues(this.callbackParamName_, goog.net.Jsonp.CALLBACKS + "." + d));
+  goog.dom.setProperties(e, {type:"text/javascript", id:d, charset:"UTF-8", src:c.toString()});
+  goog.dom.appendChild(document.getElementsByTagName("head")[0], e);
+  return{id_:d, timeout_:f}
+};
+goog.net.Jsonp.prototype.cancel = function(a) {
+  if(a && a.id_) {
+    var b = goog.dom.getElement(a.id_);
+    b && ("SCRIPT" == b.tagName && "function" == typeof goog.global[goog.net.Jsonp.CALLBACKS][a.id_]) && (a.timeout_ && goog.global.clearTimeout(a.timeout_), goog.net.Jsonp.cleanup_(a.id_, b, !1))
+  }
+};
+goog.net.Jsonp.newErrorHandler_ = function(a, b, c, d) {
+  return function() {
+    goog.net.Jsonp.cleanup_(a, b, !1);
+    d && d(c)
+  }
+};
+goog.net.Jsonp.newReplyHandler_ = function(a, b, c, d) {
+  return function(e) {
+    goog.global.clearTimeout(d);
+    goog.net.Jsonp.cleanup_(a, b, !0);
+    c.apply(void 0, arguments)
+  }
+};
+goog.net.Jsonp.cleanup_ = function(a, b, c) {
+  goog.global.setTimeout(function() {
+    goog.dom.removeNode(b)
+  }, 0);
+  goog.global[goog.net.Jsonp.CALLBACKS][a] && (c ? delete goog.global[goog.net.Jsonp.CALLBACKS][a] : goog.global[goog.net.Jsonp.CALLBACKS][a] = goog.nullFunction)
+};
+goog.net.Jsonp.addPayloadToUri_ = function(a, b) {
+  for(var c in a) {
+    (!a.hasOwnProperty || a.hasOwnProperty(c)) && b.setParameterValues(c, a[c])
+  }
+  return b
+};
+shoreleave.remotes.jsonp = {};
+shoreleave.remotes.jsonp.jsonp = function() {
+  var a = function(a, b) {
+    var e = cljs.core.seq_QMARK_.call(null, b) ? cljs.core.apply.call(null, cljs.core.hash_map, b) : b, f = cljs.core._lookup.call(null, e, "\ufdd0'timeout-ms", null), g = cljs.core._lookup.call(null, e, "\ufdd0'callback-value", null), h = cljs.core._lookup.call(null, e, "\ufdd0'callback-name", null), i = cljs.core._lookup.call(null, e, "\ufdd0'content", null), j = cljs.core._lookup.call(null, e, "\ufdd0'on-timeout", null), k = cljs.core._lookup.call(null, e, "\ufdd0'on-success", null), e = new goog.net.Jsonp(a, 
+    h), i = cljs.core.truth_(i) ? shoreleave.common.clj__GT_js.call(null, i) : null, h = cljs.core.truth_(k) ? function(a) {
+      return k.call(null, cljs.core.js__GT_clj.call(null, a, "\ufdd0'keywordize-keys", !0))
+    } : null, l = cljs.core.truth_(j) ? function(a) {
+      return j.call(null, cljs.core.js__GT_clj.call(null, a, "\ufdd0'keywordize-keys", !0))
+    } : null;
+    cljs.core.truth_(f) && e.setRequestTimeout(f);
+    return e.send(i, h, l, g)
   }, b = function(b, d) {
     var e = null;
     goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
@@ -20174,389 +21057,6 @@ goog.net.XhrManager.Request.prototype.disposeInternal = function() {
   delete this.xhrEventCallback_;
   delete this.completeCallback_
 };
-goog.net.Cookies = function(a) {
-  this.document_ = a
-};
-goog.net.Cookies.MAX_COOKIE_LENGTH = 3950;
-goog.net.Cookies.SPLIT_RE_ = /\s*;\s*/;
-goog.net.Cookies.TEST_COOKIE_NAME_ = "COOKIES_TEST_";
-goog.net.Cookies.prototype.isEnabled = function() {
-  var a = this.isNavigatorCookieEnabled_();
-  if(a && goog.userAgent.WEBKIT) {
-    var b = goog.net.Cookies.TEST_COOKIE_NAME_ + goog.now();
-    goog.net.cookies.set(b, "1");
-    if(!this.get(b)) {
-      return!1
-    }
-    this.remove(b)
-  }
-  return a
-};
-goog.net.Cookies.prototype.isValidName = function(a) {
-  return!/[;=\s]/.test(a)
-};
-goog.net.Cookies.prototype.isValidValue = function(a) {
-  return!/[;\r\n]/.test(a)
-};
-goog.net.Cookies.prototype.set = function(a, b, c, d, e, f) {
-  if(!this.isValidName(a)) {
-    throw Error('Invalid cookie name "' + a + '"');
-  }
-  if(!this.isValidValue(b)) {
-    throw Error('Invalid cookie value "' + b + '"');
-  }
-  goog.isDef(c) || (c = -1);
-  e = e ? ";domain=" + e : "";
-  d = d ? ";path=" + d : "";
-  f = f ? ";secure" : "";
-  c = 0 > c ? "" : 0 == c ? ";expires=" + (new Date(1970, 1, 1)).toUTCString() : ";expires=" + (new Date(goog.now() + 1E3 * c)).toUTCString();
-  this.setCookie_(a + "=" + b + e + d + c + f)
-};
-goog.net.Cookies.prototype.get = function(a, b) {
-  for(var c = a + "=", d = this.getParts_(), e = 0, f;f = d[e];e++) {
-    if(0 == f.indexOf(c)) {
-      return f.substr(c.length)
-    }
-  }
-  return b
-};
-goog.net.Cookies.prototype.remove = function(a, b, c) {
-  var d = this.containsKey(a);
-  this.set(a, "", 0, b, c);
-  return d
-};
-goog.net.Cookies.prototype.getKeys = function() {
-  return this.getKeyValues_().keys
-};
-goog.net.Cookies.prototype.getValues = function() {
-  return this.getKeyValues_().values
-};
-goog.net.Cookies.prototype.isEmpty = function() {
-  return!this.getCookie_()
-};
-goog.net.Cookies.prototype.getCount = function() {
-  return!this.getCookie_() ? 0 : this.getParts_().length
-};
-goog.net.Cookies.prototype.containsKey = function(a) {
-  return goog.isDef(this.get(a))
-};
-goog.net.Cookies.prototype.containsValue = function(a) {
-  for(var b = this.getKeyValues_().values, c = 0;c < b.length;c++) {
-    if(b[c] == a) {
-      return!0
-    }
-  }
-  return!1
-};
-goog.net.Cookies.prototype.clear = function() {
-  for(var a = this.getKeyValues_().keys, b = a.length - 1;0 <= b;b--) {
-    this.remove(a[b])
-  }
-};
-goog.net.Cookies.prototype.setCookie_ = function(a) {
-  this.document_.cookie = a
-};
-goog.net.Cookies.prototype.getCookie_ = function() {
-  return this.document_.cookie
-};
-goog.net.Cookies.prototype.getParts_ = function() {
-  return(this.getCookie_() || "").split(goog.net.Cookies.SPLIT_RE_)
-};
-goog.net.Cookies.prototype.isNavigatorCookieEnabled_ = function() {
-  return navigator.cookieEnabled
-};
-goog.net.Cookies.prototype.getKeyValues_ = function() {
-  for(var a = this.getParts_(), b = [], c = [], d, e, f = 0;e = a[f];f++) {
-    d = e.indexOf("="), -1 == d ? (b.push(""), c.push(e)) : (b.push(e.substring(0, d)), c.push(e.substring(d + 1)))
-  }
-  return{keys:b, values:c}
-};
-goog.net.cookies = new goog.net.Cookies(document);
-goog.net.cookies.MAX_COOKIE_LENGTH = goog.net.Cookies.MAX_COOKIE_LENGTH;
-shoreleave.browser.cookies = {};
-goog.net.Cookies.prototype.cljs$core$IHash$ = !0;
-goog.net.Cookies.prototype.cljs$core$IHash$_hash$arity$1 = function(a) {
-  return cljs.core._hash.call(null, cljs.core._persistent_BANG_.call(null, a))
-};
-goog.net.Cookies.prototype.cljs$core$ILookup$ = !0;
-goog.net.Cookies.prototype.cljs$core$ILookup$_lookup$arity$2 = function(a, b) {
-  return cljs.core._lookup.call(null, a, b, null)
-};
-goog.net.Cookies.prototype.cljs$core$ILookup$_lookup$arity$3 = function(a, b, c) {
-  return goog.string.urlDecode(a.get(cljs.core.name.call(null, b), c))
-};
-goog.net.Cookies.prototype.cljs$core$IAssociative$ = !0;
-goog.net.Cookies.prototype.cljs$core$IAssociative$_assoc$arity$3 = function(a, b, c) {
-  return cljs.core._assoc.call(null, cljs.core._persistent_BANG_.call(null, a), b, c)
-};
-goog.net.Cookies.prototype.cljs$core$IAssociative$_contains_key_QMARK_$arity$2 = function(a, b) {
-  return a.containsKey(cljs.core.name.call(null, b))
-};
-goog.net.Cookies.prototype.cljs$core$IFn$ = !0;
-goog.net.Cookies.prototype.call = function() {
-  var a = null;
-  return a = function(a, c, d) {
-    switch(arguments.length) {
-      case 2:
-        return cljs.core._lookup.call(null, this, c);
-      case 3:
-        return cljs.core._lookup.call(null, this, c, d)
-    }
-    throw"Invalid arity: " + arguments.length;
-  }
-}();
-goog.net.Cookies.prototype.apply = function(a, b) {
-  return a.call.apply(a, [a].concat(b.slice()))
-};
-goog.net.Cookies.prototype.cljs$core$ITransientMap$ = !0;
-goog.net.Cookies.prototype.cljs$core$ITransientMap$_dissoc_BANG_$arity$4 = function() {
-  var a = function(a, b, e) {
-    var f = a.isValidName(cljs.core.name.call(null, b)), b = cljs.core.truth_(f) ? cljs.core.name.call(null, b) : f;
-    return cljs.core.truth_(b) ? (e = cljs.core.apply.call(null, cljs.core.hash_map, e), f = cljs.core.seq_QMARK_.call(null, e) ? cljs.core.apply.call(null, cljs.core.hash_map, e) : e, e = cljs.core._lookup.call(null, f, "\ufdd0'domain", null), f = cljs.core._lookup.call(null, f, "\ufdd0'path", null), a.remove(b, f, e)) : null
-  }, b = function(b, d, e) {
-    var f = null;
-    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
-    return a.call(this, b, d, f)
-  };
-  b.cljs$lang$maxFixedArity = 2;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
-    return a(d, e, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-goog.net.Cookies.prototype.cljs$core$ISeqable$ = !0;
-goog.net.Cookies.prototype.cljs$core$ISeqable$_seq$arity$1 = function(a) {
-  return cljs.core.map.call(null, cljs.core.vector, a.getKeys(), a.getValues())
-};
-goog.net.Cookies.prototype.cljs$core$IPrintable$ = !0;
-goog.net.Cookies.prototype.cljs$core$IPrintable$_pr_seq$arity$2 = function(a, b) {
-  return cljs.core._pr_seq.call(null, cljs.core._persistent_BANG_.call(null, a), b)
-};
-goog.net.Cookies.prototype.cljs$core$ICounted$ = !0;
-goog.net.Cookies.prototype.cljs$core$ICounted$_count$arity$1 = function(a) {
-  return a.getCount()
-};
-goog.net.Cookies.prototype.cljs$core$ITransientCollection$ = !0;
-goog.net.Cookies.prototype.cljs$core$ITransientCollection$_persistent_BANG_$arity$1 = function(a) {
-  return shoreleave.browser.cookies.as_hash_map.call(null, a)
-};
-goog.net.Cookies.prototype.cljs$core$ITransientAssociative$ = !0;
-goog.net.Cookies.prototype.cljs$core$ITransientAssociative$_assoc_BANG_$arity$5 = function() {
-  var a = function(a, b, e, f) {
-    var g = a.isValidName(cljs.core.name.call(null, b)), b = cljs.core.truth_(g) ? cljs.core.name.call(null, b) : g;
-    if(cljs.core.truth_(b)) {
-      var f = cljs.core.apply.call(null, cljs.core.hash_map, f), h = cljs.core.seq_QMARK_.call(null, f) ? cljs.core.apply.call(null, cljs.core.hash_map, f) : f, f = cljs.core._lookup.call(null, h, "\ufdd0'secure?", null), g = cljs.core._lookup.call(null, h, "\ufdd0'domain", null), i = cljs.core._lookup.call(null, h, "\ufdd0'path", null), h = cljs.core._lookup.call(null, h, "\ufdd0'max-age", null);
-      return a.set(b, e, h, i, g, f)
-    }
-    return null
-  }, b = function(b, d, e, f) {
-    var g = null;
-    goog.isDef(f) && (g = cljs.core.array_seq(Array.prototype.slice.call(arguments, 3), 0));
-    return a.call(this, b, d, e, g)
-  };
-  b.cljs$lang$maxFixedArity = 3;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), f = cljs.core.first(cljs.core.next(cljs.core.next(b))), b = cljs.core.rest(cljs.core.next(cljs.core.next(b)));
-    return a(d, e, f, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-shoreleave.browser.cookies.cookies = new goog.net.Cookies(document);
-shoreleave.browser.cookies.as_hash_map = function() {
-  var a = null, b = function() {
-    return a.call(null, shoreleave.browser.cookies.cookies)
-  }, c = function(a) {
-    return cljs.core.zipmap.call(null, a.getKeys(), a.getValues())
-  }, a = function(a) {
-    switch(arguments.length) {
-      case 0:
-        return b.call(this);
-      case 1:
-        return c.call(this, a)
-    }
-    throw"Invalid arity: " + arguments.length;
-  };
-  a.cljs$lang$arity$0 = b;
-  a.cljs$lang$arity$1 = c;
-  return a
-}();
-shoreleave.browser.cookies.cookies_enabled_QMARK_ = function() {
-  var a = null, b = function() {
-    return a.call(null, shoreleave.browser.cookies.cookies)
-  }, c = function(a) {
-    return a.isEnabled()
-  }, a = function(a) {
-    switch(arguments.length) {
-      case 0:
-        return b.call(this);
-      case 1:
-        return c.call(this, a)
-    }
-    throw"Invalid arity: " + arguments.length;
-  };
-  a.cljs$lang$arity$0 = b;
-  a.cljs$lang$arity$1 = c;
-  return a
-}();
-shoreleave.browser.cookies.empty_BANG_ = function(a) {
-  return a.clear()
-};
-clojure.string = {};
-clojure.string.seq_reverse = function(a) {
-  return cljs.core.reduce.call(null, cljs.core.conj, cljs.core.List.EMPTY, a)
-};
-clojure.string.reverse = function(a) {
-  return a.split("").reverse().join("")
-};
-clojure.string.replace = function(a, b, c) {
-  if(cljs.core.string_QMARK_.call(null, b)) {
-    return a.replace(RegExp(goog.string.regExpEscape(b), "g"), c)
-  }
-  if(cljs.core.truth_(b.hasOwnProperty("source"))) {
-    return a.replace(RegExp(b.source, "g"), c)
-  }
-  throw[cljs.core.str("Invalid match arg: "), cljs.core.str(b)].join("");
-};
-clojure.string.replace_first = function(a, b, c) {
-  return a.replace(b, c)
-};
-clojure.string.join = function() {
-  var a = null, b = function(a) {
-    return cljs.core.apply.call(null, cljs.core.str, a)
-  }, c = function(a, b) {
-    return cljs.core.apply.call(null, cljs.core.str, cljs.core.interpose.call(null, a, b))
-  }, a = function(a, e) {
-    switch(arguments.length) {
-      case 1:
-        return b.call(this, a);
-      case 2:
-        return c.call(this, a, e)
-    }
-    throw"Invalid arity: " + arguments.length;
-  };
-  a.cljs$lang$arity$1 = b;
-  a.cljs$lang$arity$2 = c;
-  return a
-}();
-clojure.string.upper_case = function(a) {
-  return a.toUpperCase()
-};
-clojure.string.lower_case = function(a) {
-  return a.toLowerCase()
-};
-clojure.string.capitalize = function(a) {
-  return 2 > cljs.core.count.call(null, a) ? clojure.string.upper_case.call(null, a) : [cljs.core.str(clojure.string.upper_case.call(null, cljs.core.subs.call(null, a, 0, 1))), cljs.core.str(clojure.string.lower_case.call(null, cljs.core.subs.call(null, a, 1)))].join("")
-};
-clojure.string.split = function() {
-  var a = null, b = function(a, b) {
-    return cljs.core.vec.call(null, ("" + cljs.core.str(a)).split(b))
-  }, c = function(a, b, c) {
-    if(1 > c) {
-      return cljs.core.vec.call(null, ("" + cljs.core.str(a)).split(b))
-    }
-    for(var g = cljs.core.PersistentVector.EMPTY;;) {
-      if(cljs.core._EQ_.call(null, c, 1)) {
-        return cljs.core.conj.call(null, g, a)
-      }
-      var h = cljs.core.re_find.call(null, b, a);
-      if(cljs.core.truth_(h)) {
-        var i = h, h = a.indexOf(i), i = a.substring(h + cljs.core.count.call(null, i)), c = c - 1, g = cljs.core.conj.call(null, g, a.substring(0, h)), a = i
-      }else {
-        return cljs.core.conj.call(null, g, a)
-      }
-    }
-  }, a = function(a, e, f) {
-    switch(arguments.length) {
-      case 2:
-        return b.call(this, a, e);
-      case 3:
-        return c.call(this, a, e, f)
-    }
-    throw"Invalid arity: " + arguments.length;
-  };
-  a.cljs$lang$arity$2 = b;
-  a.cljs$lang$arity$3 = c;
-  return a
-}();
-clojure.string.split_lines = function(a) {
-  return clojure.string.split.call(null, a, /\n|\r\n/)
-};
-clojure.string.trim = function(a) {
-  return goog.string.trim(a)
-};
-clojure.string.triml = function(a) {
-  return goog.string.trimLeft(a)
-};
-clojure.string.trimr = function(a) {
-  return goog.string.trimRight(a)
-};
-clojure.string.trim_newline = function(a) {
-  for(var b = a.length;;) {
-    if(0 === b) {
-      return""
-    }
-    var c = cljs.core._lookup.call(null, a, b - 1, null);
-    var d = cljs.core._EQ_.call(null, c, "\n"), c = d ? d : cljs.core._EQ_.call(null, c, "\r");
-    if(c) {
-      b -= 1
-    }else {
-      return a.substring(0, b)
-    }
-  }
-};
-clojure.string.blank_QMARK_ = function(a) {
-  var b = "" + cljs.core.str(a);
-  return cljs.core.truth_(function() {
-    var a = cljs.core.not.call(null, b);
-    return a ? a : (a = cljs.core._EQ_.call(null, "", b)) ? a : cljs.core.re_matches.call(null, /\s+/, b)
-  }()) ? !0 : !1
-};
-clojure.string.escape = function(a, b) {
-  for(var c = new goog.string.StringBuffer, d = a.length, e = 0;;) {
-    if(cljs.core._EQ_.call(null, d, e)) {
-      return c.toString()
-    }
-    var f = a.charAt(e), g = cljs.core._lookup.call(null, b, f, null);
-    cljs.core.truth_(g) ? c.append("" + cljs.core.str(g)) : c.append(f);
-    e += 1
-  }
-};
-shoreleave.remotes.common = {};
-shoreleave.remotes.common.rand_id_str = function() {
-  return goog.string.getRandomString()
-};
-shoreleave.remotes.common.__GT_url_method = function(a) {
-  return clojure.string.upper_case.call(null, cljs.core.name.call(null, a))
-};
-shoreleave.remotes.common.parse_route = function(a) {
-  if(cljs.core.string_QMARK_.call(null, a)) {
-    return cljs.core.PersistentVector.fromArray(["GET", a], !0)
-  }
-  if(cljs.core.vector_QMARK_.call(null, a)) {
-    var b = cljs.core.nth.call(null, a, 0, null), a = cljs.core.nth.call(null, a, 1, null);
-    return cljs.core.PersistentVector.fromArray([shoreleave.remotes.common.__GT_url_method.call(null, b), a], !0)
-  }
-  return cljs.core.PersistentVector.fromArray(["GET", a], !0)
-};
-shoreleave.remotes.common.__GT_simple_callback = function(a) {
-  return cljs.core.truth_(a) ? function(b) {
-    b = b.getResponseText();
-    return a.call(null, b)
-  } : null
-};
-shoreleave.remotes.common.csrf_protected = function(a, b) {
-  var c;
-  c = (c = cljs.core._EQ_.call(null, b, "POST")) ? (new cljs.core.Keyword("\ufdd0'__anti-forgery-token")).call(null, shoreleave.browser.cookies.cookies) : c;
-  return cljs.core.truth_(c) ? cljs.core.merge.call(null, a, cljs.core.ObjMap.fromObject(["\ufdd0'__anti-forgery-token"], {"\ufdd0'__anti-forgery-token":c})) : a
-};
-shoreleave.remotes.common.__GT_data_str = function(a) {
-  a = shoreleave.common.clj__GT_js.call(null, a);
-  a = goog.Uri.QueryData.createFromMap(new goog.structs.Map(a));
-  return"" + cljs.core.str(a)
-};
 shoreleave.remotes.request = {};
 shoreleave.remotes.request.responders = cljs.core.atom.call(null, cljs.core.ObjMap.EMPTY);
 shoreleave.remotes.request.add_responders = function(a, b, c) {
@@ -20608,49 +21108,6 @@ shoreleave.remotes.request.response_received = function(a, b) {
 };
 clojure.browser.event.listen.call(null, shoreleave.remotes.request._STAR_xhr_manager_STAR_, "success", cljs.core.partial.call(null, shoreleave.remotes.request.response_received, shoreleave.remotes.request.response_success));
 clojure.browser.event.listen.call(null, shoreleave.remotes.request._STAR_xhr_manager_STAR_, "error", cljs.core.partial.call(null, shoreleave.remotes.request.response_received, shoreleave.remotes.request.response_error));
-shoreleave.remotes.xhr = {};
-shoreleave.remotes.xhr.xhr = function() {
-  var a = function(a, b) {
-    var e = new goog.net.XhrIo, f = shoreleave.remotes.common.parse_route.call(null, a), g = cljs.core.nth.call(null, f, 0, null), f = cljs.core.nth.call(null, f, 1, null), h = cljs.core.apply.call(null, cljs.core.hash_map, b), i = cljs.core.seq_QMARK_.call(null, h) ? cljs.core.apply.call(null, cljs.core.hash_map, h) : h, h = cljs.core._lookup.call(null, i, "\ufdd0'headers", null), j = cljs.core._lookup.call(null, i, "\ufdd0'content", null), i = cljs.core._lookup.call(null, i, "\ufdd0'on-success", 
-    null), j = shoreleave.remotes.common.csrf_protected.call(null, j, g), j = shoreleave.remotes.common.__GT_data_str.call(null, j), k = shoreleave.remotes.common.__GT_simple_callback.call(null, i);
-    cljs.core.truth_(k) && goog.events.listen(e, goog.net.EventType.COMPLETE, function() {
-      return k.call(null, e)
-    });
-    return e.send(f, g, j, cljs.core.truth_(h) ? shoreleave.common.clj__GT_js.call(null, h) : null)
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-shoreleave.remotes.http_rpc = {};
-shoreleave.remotes.http_rpc._STAR_remote_uri_STAR_ = "/_fetch";
-shoreleave.remotes.http_rpc.remote_callback = function() {
-  var a = function(a, b, e, f) {
-    return shoreleave.remotes.xhr.xhr.call(null, cljs.core.PersistentVector.fromArray(["\ufdd0'post", shoreleave.remotes.http_rpc._STAR_remote_uri_STAR_], !0), "\ufdd0'content", cljs.core.merge.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'remote", "\ufdd0'params"], {"\ufdd0'remote":a, "\ufdd0'params":cljs.core.pr_str.call(null, b)}), cljs.core.apply.call(null, cljs.core.hash_map, f)), "\ufdd0'on-success", cljs.core.truth_(e) ? function(a) {
-      a = cljs.core._EQ_.call(null, a, "") ? "nil" : a;
-      return e.call(null, cljs.reader.read_string.call(null, a))
-    } : null)
-  }, b = function(b, d, e, f) {
-    var g = null;
-    goog.isDef(f) && (g = cljs.core.array_seq(Array.prototype.slice.call(arguments, 3), 0));
-    return a.call(this, b, d, e, g)
-  };
-  b.cljs$lang$maxFixedArity = 3;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), f = cljs.core.first(cljs.core.next(cljs.core.next(b))), b = cljs.core.rest(cljs.core.next(cljs.core.next(b)));
-    return a(d, e, f, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
 shoreleave.remote = {};
 shoreleave.remote.request = shoreleave.remotes.request.request;
 shoreleave.remote.jsonp = shoreleave.remotes.jsonp.jsonp;
@@ -20701,463 +21158,6 @@ shoreleave.services.geo.normalize_location = function() {
   a.cljs$lang$arity$3 = c;
   return a
 }();
-jayq.core = {};
-jayq.core.crate_meta = function(a) {
-  return a.prototype._crateGroup
-};
-jayq.core.__GT_selector = function(a) {
-  if(cljs.core.string_QMARK_.call(null, a)) {
-    return a
-  }
-  if(cljs.core.fn_QMARK_.call(null, a)) {
-    var b = jayq.core.crate_meta.call(null, a);
-    return cljs.core.truth_(b) ? [cljs.core.str("[crateGroup="), cljs.core.str(b), cljs.core.str("]")].join("") : a
-  }
-  return cljs.core.keyword_QMARK_.call(null, a) ? cljs.core.name.call(null, a) : a
-};
-jayq.core.$ = function() {
-  var a = function(a, b) {
-    var e = cljs.core.nth.call(null, b, 0, null);
-    return cljs.core.not.call(null, e) ? jQuery(jayq.core.__GT_selector.call(null, a)) : jQuery(jayq.core.__GT_selector.call(null, a), e)
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jQuery.prototype.cljs$core$IReduce$ = !0;
-jQuery.prototype.cljs$core$IReduce$_reduce$arity$2 = function(a, b) {
-  return cljs.core.ci_reduce.call(null, a, b)
-};
-jQuery.prototype.cljs$core$IReduce$_reduce$arity$3 = function(a, b, c) {
-  return cljs.core.ci_reduce.call(null, a, b, c)
-};
-jQuery.prototype.cljs$core$ILookup$ = !0;
-jQuery.prototype.cljs$core$ILookup$_lookup$arity$2 = function(a, b) {
-  var c = a.slice(b, b + 1);
-  return cljs.core.truth_(c) ? c : null
-};
-jQuery.prototype.cljs$core$ILookup$_lookup$arity$3 = function(a, b, c) {
-  return cljs.core._nth.call(null, a, b, c)
-};
-jQuery.prototype.cljs$core$ISequential$ = !0;
-jQuery.prototype.cljs$core$IIndexed$ = !0;
-jQuery.prototype.cljs$core$IIndexed$_nth$arity$2 = function(a, b) {
-  return b < cljs.core.count.call(null, a) ? a.slice(b, b + 1) : null
-};
-jQuery.prototype.cljs$core$IIndexed$_nth$arity$3 = function(a, b, c) {
-  return b < cljs.core.count.call(null, a) ? a.slice(b, b + 1) : void 0 === c ? null : c
-};
-jQuery.prototype.cljs$core$ICounted$ = !0;
-jQuery.prototype.cljs$core$ICounted$_count$arity$1 = function(a) {
-  return a.size()
-};
-jQuery.prototype.cljs$core$ISeq$ = !0;
-jQuery.prototype.cljs$core$ISeq$_first$arity$1 = function(a) {
-  return a.get(0)
-};
-jQuery.prototype.cljs$core$ISeq$_rest$arity$1 = function(a) {
-  return 1 < cljs.core.count.call(null, a) ? a.slice(1) : cljs.core.list.call(null)
-};
-jQuery.prototype.cljs$core$ISeqable$ = !0;
-jQuery.prototype.cljs$core$ISeqable$_seq$arity$1 = function(a) {
-  return cljs.core.truth_(a.get(0)) ? a : null
-};
-jQuery.prototype.call = function() {
-  var a = null;
-  return a = function(a, c, d) {
-    switch(arguments.length) {
-      case 2:
-        return cljs.core._lookup.call(null, this, c);
-      case 3:
-        return cljs.core._lookup.call(null, this, c, d)
-    }
-    throw"Invalid arity: " + arguments.length;
-  }
-}();
-jayq.core.anim = function(a, b, c) {
-  return a.animate(jayq.util.clj__GT_js.call(null, b), c)
-};
-jayq.core.text = function(a, b) {
-  return a.text(b)
-};
-jayq.core.css = function(a, b) {
-  return cljs.core.keyword_QMARK_.call(null, b) ? a.css(cljs.core.name.call(null, b)) : a.css(jayq.util.clj__GT_js.call(null, b))
-};
-jayq.core.attr = function() {
-  var a = function(a, b, e) {
-    e = cljs.core.nth.call(null, e, 0, null);
-    b = cljs.core.name.call(null, b);
-    return cljs.core.not.call(null, e) ? a.attr(b) : a.attr(b, e)
-  }, b = function(b, d, e) {
-    var f = null;
-    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
-    return a.call(this, b, d, f)
-  };
-  b.cljs$lang$maxFixedArity = 2;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
-    return a(d, e, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.remove_attr = function(a, b) {
-  return a.removeAttr(cljs.core.name.call(null, b))
-};
-jayq.core.data = function() {
-  var a = function(a, b, e) {
-    e = cljs.core.nth.call(null, e, 0, null);
-    b = cljs.core.name.call(null, b);
-    return cljs.core.not.call(null, e) ? a.data(b) : a.data(b, e)
-  }, b = function(b, d, e) {
-    var f = null;
-    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
-    return a.call(this, b, d, f)
-  };
-  b.cljs$lang$maxFixedArity = 2;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
-    return a(d, e, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.position = function(a) {
-  return cljs.core.js__GT_clj.call(null, a.position(), "\ufdd0'keywordize-keys", !0)
-};
-jayq.core.add_class = function(a, b) {
-  var c = cljs.core.name.call(null, b);
-  return a.addClass(c)
-};
-jayq.core.remove_class = function(a, b) {
-  var c = cljs.core.name.call(null, b);
-  return a.removeClass(c)
-};
-jayq.core.toggle_class = function(a, b) {
-  var c = cljs.core.name.call(null, b);
-  return a.toggleClass(c)
-};
-jayq.core.has_class = function(a, b) {
-  var c = cljs.core.name.call(null, b);
-  return a.hasClass(c)
-};
-jayq.core.after = function(a, b) {
-  return a.after(b)
-};
-jayq.core.before = function(a, b) {
-  return a.before(b)
-};
-jayq.core.append = function(a, b) {
-  return a.append(b)
-};
-jayq.core.prepend = function(a, b) {
-  return a.prepend(b)
-};
-jayq.core.remove = function(a) {
-  return a.remove()
-};
-jayq.core.hide = function() {
-  var a = function(a, b) {
-    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
-    return a.hide(e, f)
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.show = function() {
-  var a = function(a, b) {
-    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
-    return a.show(e, f)
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.toggle = function() {
-  var a = function(a, b) {
-    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
-    return a.toggle(e, f)
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.fade_out = function() {
-  var a = function(a, b) {
-    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
-    return a.fadeOut(e, f)
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.fade_in = function() {
-  var a = function(a, b) {
-    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
-    return a.fadeIn(e, f)
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.slide_up = function() {
-  var a = function(a, b) {
-    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
-    return a.slideUp(e, f)
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.slide_down = function() {
-  var a = function(a, b) {
-    var e = cljs.core.nth.call(null, b, 0, null), f = cljs.core.nth.call(null, b, 1, null);
-    return a.slideDown(e, f)
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.parent = function(a) {
-  return a.parent()
-};
-jayq.core.find = function(a, b) {
-  return a.find(cljs.core.name.call(null, b))
-};
-jayq.core.closest = function() {
-  var a = function(a, b, e) {
-    e = cljs.core.nth.call(null, e, 0, null);
-    return a.closest(b, e)
-  }, b = function(b, d, e) {
-    var f = null;
-    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
-    return a.call(this, b, d, f)
-  };
-  b.cljs$lang$maxFixedArity = 2;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
-    return a(d, e, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.clone = function(a) {
-  return a.clone()
-};
-jayq.core.inner = function(a, b) {
-  return a.html(b)
-};
-jayq.core.empty = function(a) {
-  return a.empty()
-};
-jayq.core.val = function() {
-  var a = function(a, b) {
-    var e = cljs.core.nth.call(null, b, 0, null);
-    return cljs.core.truth_(e) ? a.val(e) : a.val()
-  }, b = function(b, d) {
-    var e = null;
-    goog.isDef(d) && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.serialize = function(a) {
-  return a.serialize()
-};
-jayq.core.queue = function(a, b) {
-  return a.queue(b)
-};
-jayq.core.dequeue = function(a) {
-  return jayq.core.$.call(null, a).dequeue()
-};
-jayq.core.document_ready = function(a) {
-  return jayq.core.$.call(null, document).ready(a)
-};
-jayq.core.xhr = function(a, b, c) {
-  var d = cljs.core.nth.call(null, a, 0, null), a = cljs.core.nth.call(null, a, 1, null), b = jayq.util.clj__GT_js.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'type", "\ufdd0'data", "\ufdd0'success"], {"\ufdd0'type":clojure.string.upper_case.call(null, cljs.core.name.call(null, d)), "\ufdd0'data":jayq.util.clj__GT_js.call(null, b), "\ufdd0'success":c}));
-  return jQuery.ajax(a, b)
-};
-jayq.core.ajax = function() {
-  var a = null, b = function(a) {
-    return jQuery.ajax(jayq.util.clj__GT_js.call(null, a))
-  }, c = function(a, b) {
-    return jQuery.ajax(a, jayq.util.clj__GT_js.call(null, b))
-  }, a = function(a, e) {
-    switch(arguments.length) {
-      case 1:
-        return b.call(this, a);
-      case 2:
-        return c.call(this, a, e)
-    }
-    throw"Invalid arity: " + arguments.length;
-  };
-  a.cljs$lang$arity$1 = b;
-  a.cljs$lang$arity$2 = c;
-  return a
-}();
-jayq.core.bind = function(a, b, c) {
-  return a.bind(cljs.core.name.call(null, b), c)
-};
-jayq.core.unbind = function() {
-  var a = function(a, b, e) {
-    e = cljs.core.nth.call(null, e, 0, null);
-    return a.unbind(cljs.core.name.call(null, b), e)
-  }, b = function(b, d, e) {
-    var f = null;
-    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
-    return a.call(this, b, d, f)
-  };
-  b.cljs$lang$maxFixedArity = 2;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
-    return a(d, e, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.trigger = function(a, b) {
-  return a.trigger(cljs.core.name.call(null, b))
-};
-jayq.core.delegate = function(a, b, c, d) {
-  return a.delegate(jayq.core.__GT_selector.call(null, b), cljs.core.name.call(null, c), d)
-};
-jayq.core.__GT_event = function(a) {
-  if(cljs.core.keyword_QMARK_.call(null, a)) {
-    return cljs.core.name.call(null, a)
-  }
-  if(cljs.core.map_QMARK_.call(null, a)) {
-    return jayq.util.clj__GT_js.call(null, a)
-  }
-  if(cljs.core.coll_QMARK_.call(null, a)) {
-    return clojure.string.join.call(null, " ", cljs.core.map.call(null, cljs.core.name, a))
-  }
-  throw Error([cljs.core.str("Unknown event type: "), cljs.core.str(a)].join(""));
-};
-jayq.core.on = function() {
-  var a = function(a, b, e) {
-    var f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null), e = cljs.core.nth.call(null, e, 2, null);
-    return a.on(jayq.core.__GT_event.call(null, b), jayq.core.__GT_selector.call(null, f), g, e)
-  }, b = function(b, d, e) {
-    var f = null;
-    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
-    return a.call(this, b, d, f)
-  };
-  b.cljs$lang$maxFixedArity = 2;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
-    return a(d, e, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.one = function() {
-  var a = function(a, b, e) {
-    var f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null), e = cljs.core.nth.call(null, e, 2, null);
-    return a.one(jayq.core.__GT_event.call(null, b), jayq.core.__GT_selector.call(null, f), g, e)
-  }, b = function(b, d, e) {
-    var f = null;
-    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
-    return a.call(this, b, d, f)
-  };
-  b.cljs$lang$maxFixedArity = 2;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
-    return a(d, e, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.off = function() {
-  var a = function(a, b, e) {
-    var f = cljs.core.nth.call(null, e, 0, null), e = cljs.core.nth.call(null, e, 1, null);
-    return a.off(jayq.core.__GT_event.call(null, b), jayq.core.__GT_selector.call(null, f), e)
-  }, b = function(b, d, e) {
-    var f = null;
-    goog.isDef(e) && (f = cljs.core.array_seq(Array.prototype.slice.call(arguments, 2), 0));
-    return a.call(this, b, d, f)
-  };
-  b.cljs$lang$maxFixedArity = 2;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b), e = cljs.core.first(cljs.core.next(b)), b = cljs.core.rest(cljs.core.next(b));
-    return a(d, e, b)
-  };
-  b.cljs$lang$arity$variadic = a;
-  return b
-}();
-jayq.core.prevent = function(a) {
-  return a.preventDefault()
-};
 var findit = {client:{}};
 findit.client.search = {};
 findit.client.search.query__GT_map = function(a) {
@@ -21249,43 +21249,6 @@ goog.async.Delay.prototype.isActive = function() {
 goog.async.Delay.prototype.doAction_ = function() {
   this.id_ = 0;
   this.listener_ && this.listener_.call(this.handler_)
-};
-goog.dom.ViewportSizeMonitor = function(a) {
-  goog.events.EventTarget.call(this);
-  this.window_ = a || window;
-  this.listenerKey_ = goog.events.listen(this.window_, goog.events.EventType.RESIZE, this.handleResize_, !1, this);
-  this.size_ = goog.dom.getViewportSize(this.window_);
-  this.isPollingRequired_() && (this.windowSizePollInterval_ = window.setInterval(goog.bind(this.checkForSizeChange_, this), goog.dom.ViewportSizeMonitor.WINDOW_SIZE_POLL_RATE))
-};
-goog.inherits(goog.dom.ViewportSizeMonitor, goog.events.EventTarget);
-goog.dom.ViewportSizeMonitor.getInstanceForWindow = function(a) {
-  var a = a || window, b = goog.getUid(a);
-  return goog.dom.ViewportSizeMonitor.windowInstanceMap_[b] = goog.dom.ViewportSizeMonitor.windowInstanceMap_[b] || new goog.dom.ViewportSizeMonitor(a)
-};
-goog.dom.ViewportSizeMonitor.windowInstanceMap_ = {};
-goog.dom.ViewportSizeMonitor.WINDOW_SIZE_POLL_RATE = 500;
-goog.dom.ViewportSizeMonitor.prototype.listenerKey_ = null;
-goog.dom.ViewportSizeMonitor.prototype.window_ = null;
-goog.dom.ViewportSizeMonitor.prototype.size_ = null;
-goog.dom.ViewportSizeMonitor.prototype.windowSizePollInterval_ = null;
-goog.dom.ViewportSizeMonitor.prototype.isPollingRequired_ = function() {
-  return goog.userAgent.WEBKIT && goog.userAgent.WINDOWS || goog.userAgent.OPERA && this.window_.self != this.window_.top
-};
-goog.dom.ViewportSizeMonitor.prototype.getSize = function() {
-  return this.size_ ? this.size_.clone() : null
-};
-goog.dom.ViewportSizeMonitor.prototype.disposeInternal = function() {
-  goog.dom.ViewportSizeMonitor.superClass_.disposeInternal.call(this);
-  this.listenerKey_ && (goog.events.unlistenByKey(this.listenerKey_), this.listenerKey_ = null);
-  this.windowSizePollInterval_ && (window.clearInterval(this.windowSizePollInterval_), this.windowSizePollInterval_ = null);
-  this.size_ = this.window_ = null
-};
-goog.dom.ViewportSizeMonitor.prototype.handleResize_ = function() {
-  this.checkForSizeChange_()
-};
-goog.dom.ViewportSizeMonitor.prototype.checkForSizeChange_ = function() {
-  var a = goog.dom.getViewportSize(this.window_);
-  goog.math.Size.equals(a, this.size_) || (this.size_ = a, this.dispatchEvent(goog.events.EventType.RESIZE))
 };
 goog.functions = {};
 goog.functions.constant = function(a) {
@@ -21817,6 +21780,43 @@ goog.dom.query = function() {
 }();
 goog.exportSymbol("goog.dom.query", goog.dom.query);
 goog.exportSymbol("goog.dom.query.pseudos", goog.dom.query.pseudos);
+goog.dom.ViewportSizeMonitor = function(a) {
+  goog.events.EventTarget.call(this);
+  this.window_ = a || window;
+  this.listenerKey_ = goog.events.listen(this.window_, goog.events.EventType.RESIZE, this.handleResize_, !1, this);
+  this.size_ = goog.dom.getViewportSize(this.window_);
+  this.isPollingRequired_() && (this.windowSizePollInterval_ = window.setInterval(goog.bind(this.checkForSizeChange_, this), goog.dom.ViewportSizeMonitor.WINDOW_SIZE_POLL_RATE))
+};
+goog.inherits(goog.dom.ViewportSizeMonitor, goog.events.EventTarget);
+goog.dom.ViewportSizeMonitor.getInstanceForWindow = function(a) {
+  var a = a || window, b = goog.getUid(a);
+  return goog.dom.ViewportSizeMonitor.windowInstanceMap_[b] = goog.dom.ViewportSizeMonitor.windowInstanceMap_[b] || new goog.dom.ViewportSizeMonitor(a)
+};
+goog.dom.ViewportSizeMonitor.windowInstanceMap_ = {};
+goog.dom.ViewportSizeMonitor.WINDOW_SIZE_POLL_RATE = 500;
+goog.dom.ViewportSizeMonitor.prototype.listenerKey_ = null;
+goog.dom.ViewportSizeMonitor.prototype.window_ = null;
+goog.dom.ViewportSizeMonitor.prototype.size_ = null;
+goog.dom.ViewportSizeMonitor.prototype.windowSizePollInterval_ = null;
+goog.dom.ViewportSizeMonitor.prototype.isPollingRequired_ = function() {
+  return goog.userAgent.WEBKIT && goog.userAgent.WINDOWS || goog.userAgent.OPERA && this.window_.self != this.window_.top
+};
+goog.dom.ViewportSizeMonitor.prototype.getSize = function() {
+  return this.size_ ? this.size_.clone() : null
+};
+goog.dom.ViewportSizeMonitor.prototype.disposeInternal = function() {
+  goog.dom.ViewportSizeMonitor.superClass_.disposeInternal.call(this);
+  this.listenerKey_ && (goog.events.unlistenByKey(this.listenerKey_), this.listenerKey_ = null);
+  this.windowSizePollInterval_ && (window.clearInterval(this.windowSizePollInterval_), this.windowSizePollInterval_ = null);
+  this.size_ = this.window_ = null
+};
+goog.dom.ViewportSizeMonitor.prototype.handleResize_ = function() {
+  this.checkForSizeChange_()
+};
+goog.dom.ViewportSizeMonitor.prototype.checkForSizeChange_ = function() {
+  var a = goog.dom.getViewportSize(this.window_);
+  goog.math.Size.equals(a, this.size_) || (this.size_ = a, this.dispatchEvent(goog.events.EventType.RESIZE))
+};
 var enfocus = {core:{}};
 enfocus.core.debug = !0;
 enfocus.core.log_debug = function(a) {
@@ -23318,11 +23318,11 @@ findit.client.main.apiping = function() {
   })
 };
 goog.exportSymbol("findit.client.main.apiping", findit.client.main.apiping);
-var temp__3974__auto____31693 = (new cljs.core.Keyword("\ufdd0'q")).call(null, findit.client.main.hash_args);
-if(cljs.core.truth_(temp__3974__auto____31693)) {
-  var query__31694 = temp__3974__auto____31693;
+var temp__3974__auto____21849 = (new cljs.core.Keyword("\ufdd0'q")).call(null, findit.client.main.hash_args);
+if(cljs.core.truth_(temp__3974__auto____21849)) {
+  var query__21850 = temp__3974__auto____21849;
   window.onload = function() {
-    return findit.client.controllers.process_search.call(null, query__31694)
+    return findit.client.controllers.process_search.call(null, query__21850)
   }
 }
 shoreleave.browser.history.navigate_callback.call(null, function(a) {
@@ -23349,7 +23349,7 @@ cljs.core.swap_BANG_.call(null, findit.client.main.test_atom, cljs.core.assoc, "
 shoreleave.common.toggle_brepl.call(null, findit.client.main.query_args, "\ufdd0'repl");
 shoreleave.pubsubs.event = {};
 shoreleave.pubsubs.event.publish_event = function(a, b) {
-  var c = new goog.events.Events(a);
+  var c = new goog.events.Event(a);
   c.data = b;
   return c
 };

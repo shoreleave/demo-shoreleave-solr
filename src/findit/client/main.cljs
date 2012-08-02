@@ -3,7 +3,8 @@
             [findit.client.view.listeners :as listeners]
             [shoreleave.common :as common]
             [shoreleave.browser.history :as history]
-            [shoreleave.pubsubs.simple :as pbus]
+            ;[shoreleave.pubsubs.event :as pbus] ;; This is a non-blocking event-backed bus
+            [shoreleave.pubsubs.simple :as pbus] ;; This is similar to CLJS:One's `dispatch` system
             [shoreleave.pubsubs.protocols :as pubsub])
   (:require-macros  [shoreleave.remotes.macros :as srm]))
 
