@@ -21,7 +21,13 @@ The goal is illustrate how to build a client using partial rendering, and render
 
 You can interactively explore the code base using a [Catnip](https://github.com/bodil/catnip) guided tour: `lein2 edit`
 
-You can also browse the [Marginalia docs](#) and run with app with: `lein run`
+You can also browse the [Marginalia docs](#) and run with app with: `lein run`  
+Or build the demo from scratch with:
+```
+$ rake build:fullhtml[prod]
+$ lein cljsbuild once
+$ lein run
+```
 
 
 Libraries used

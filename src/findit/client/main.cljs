@@ -5,7 +5,7 @@
             [shoreleave.browser.history :as history]
             [shoreleave.pubsubs.simple :as pbus]
             [shoreleave.pubsubs.protocols :as pubsub])
-  (:require-macros  [shoreleave.client.remotes.macros :as srm]))
+  (:require-macros  [shoreleave.remotes.macros :as srm]))
 
 ;; Initial setup
 ;; -------------
@@ -25,6 +25,7 @@
 ;; Integrate history/back-button to the search
 (history/navigate-callback #(controller/process-search (subs (:token %) 4) false))
 
+(js/console.log "Here comes the Bus interactions...")
 ;;Setup the PubSub bindings
 (def bus (pbus/bus))
 (defn ^:export test-fn [] "This is from the test-fn")
@@ -36,16 +37,16 @@
 (ps-test-fn)
 
 ; Build the "identity" worker
-(defn echo-workerfn [data] data)
-(def nw (swk/worker echo-workerfn))
+;(defn echo-workerfn [data] data)
+;(def nw (swk/worker echo-workerfn))
 
 ; This works, but the pubsub is uniform across everything
 ;(add-watch nw :watcher #(js/console.log (last %4)))
 
-(pubsub/publishize nw bus)
-(pubsub/subscribe bus nw #(js/console.log (str "This is from the bus --worker--: " %)))
-(nw "HELLO")
-(nw "THREADS")
+;(pubsub/publishize nw bus)
+;(pubsub/subscribe bus nw #(js/console.log (str "This is from the bus --worker--: " %)))
+;(nw "HELLO")
+;(nw "THREADS")
 
 (def test-atom (atom {}))
 (pubsub/publishize test-atom bus)

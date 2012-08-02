@@ -11,7 +11,7 @@
                  [enlive "1.0.1"]
                  [amalloy/ring-gzip-middleware "0.1.2"]
                  [ring-anti-forgery "0.1.3"]
-                 [shoreleave "0.2.2-SNAPSHOT"]
+                 ;[shoreleave "0.2.2-SNAPSHOT"]
                  [shoreleave/shoreleave-remote-noir "0.2.2-SNAPSHOT"]
                  [enfocus "0.9.1-SNAPSHOT"]
                  [jayq "0.1.0-alpha4"]]
@@ -20,7 +20,7 @@
                      ;[lein-cdt "1.0.0"] ; use lein cdt to attach
                      ;[lein-autodoc "0.9.0"]
                      [lein-marginalia "0.7.1"]]
-  :plugins  [[lein-cljsbuild "0.2.2"]
+  :plugins  [[lein-cljsbuild "0.2.4"]
              [jonase/kibit "0.0.4"]
              [lein-catnip "0.1.0"]]
   :cljsbuild {:builds [{:source-path "src",
